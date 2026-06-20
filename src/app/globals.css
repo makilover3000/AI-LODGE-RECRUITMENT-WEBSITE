@@ -1,26 +1,225 @@
 @import "tailwindcss";
 
+/* ============================================================
+   AI LODGE — design tokens
+   Retro National-Park / camping-lodge travel-poster identity.
+   Flat fills, layered silhouettes, value contrast (no gradients
+   for depth), grain overlay. Palette + type locked from brief.
+   ============================================================ */
+
+@theme {
+  /* —— Color —— */
+  --color-sky: #e7e4cb; /* warm cream, not pure white */
+  --color-ground: #c9b347; /* yellow grass */
+
+  /* trees: foreground (darkest) → background (lightest) */
+  --color-tree-1: #1f2b21;
+  --color-tree-2: #2b482d;
+  --color-tree-3: #4b6639;
+  --color-tree-4: #627942;
+
+  /* distant mountain / mist */
+  --color-mist-1: #a6b6a1;
+  --color-mist-2: #679d86;
+
+  /* cabin */
+  --color-roof: #a35a42;
+  --color-roof-shadow: #6f3c2a;
+  --color-window: #27442d;
+  --color-cabin-accent: #c06b4d;
+  --color-log: #b07a4e;
+  --color-log-shadow: #8a5c36;
+
+  /* speech bubble / UI teal */
+  --color-teal: #3bb9af; /* bright — decorative only (borders, particles, non-text) */
+  --color-teal-deep: #0d6f62; /* text surface — cream on this ≈ 4.9:1 (AA) */
+  --color-teal-text: #0a5f54; /* small teal text on cream/sky ≈ 4.5:1 (AA) */
+  --color-teal-border: #118676;
+  --color-teal-highlight: #5ebaab;
+
+  /* text */
+  --color-charcoal: #3e3e3a;
+  --color-cream: #f2f0dd;
+
+  /* —— Type —— */
+  --font-display: var(--font-anton);
+  --font-body: var(--font-barlow);
+  --font-script: var(--font-pacifico);
+
+  /* —— Motion —— */
+  --ease-door: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  color-scheme: light;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  background: var(--color-tree-1);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-sky);
+  color: var(--color-charcoal);
+  font-family: var(--font-body), "Arial Narrow", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Display headings: condensed, uppercase, heavy, slight tracking */
+.font-display {
+  font-family: var(--font-display), Impact, sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  line-height: 0.92;
+}
+
+/* Body/UI: condensed, but enough leading that descenders aren't clipped */
+.font-body {
+  font-family: var(--font-body), "Arial Narrow", sans-serif;
+  line-height: 1.12;
+}
+
+.font-script {
+  font-family: var(--font-script), cursive;
+}
+
+/* Visible, high-contrast focus ring (WCAG 2.2 — 2.4.11) */
+:focus-visible {
+  outline: 3px solid var(--color-teal-border);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* CSS `outline` does not paint on SVG <g>, so the door button gets its
+   focus indicator by lighting up its existing cue ring with a dark,
+   high-contrast stroke (tree-1 on sky ≈ 7:1, well past the 3:1 minimum). */
+.ail-door:focus-visible {
+  outline: none;
+}
+.ail-door:focus-visible #ail-door-cue {
+  opacity: 1;
+  stroke: var(--color-tree-1);
+  stroke-width: 9;
+}
+
+/* Accessible label that stays out of the way until focused */
+.skip-link {
+  position: absolute;
+  left: 0.75rem;
+  top: -3rem;
+  z-index: 100;
+  background: var(--color-teal);
+  color: var(--color-cream);
+  padding: 0.5rem 0.9rem;
+  font-family: var(--font-display), sans-serif;
+  letter-spacing: 0.04em;
+  transition: top 0.2s ease-out;
+}
+.skip-link:focus {
+  top: 0.75rem;
+}
+
+/* ============================================================
+   Keyframe motion — disabled under prefers-reduced-motion
+   ============================================================ */
+
+@keyframes ail-shimmer {
+  0% {
+    background-position: -120% 0;
+  }
+  100% {
+    background-position: 220% 0;
+  }
+}
+
+@keyframes ail-door-pulse {
+  0%,
+  100% {
+    opacity: 0.25;
+  }
+  50% {
+    opacity: 0.75;
+  }
+}
+
+@keyframes ail-float-up {
+  0% {
+    transform: translateY(8%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* ambient particle motion (per-lodge layers) */
+@keyframes ail-twinkle {
+  0%,
+  100% {
+    opacity: 0.15;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.15);
+  }
+}
+
+@keyframes ail-rise {
+  0% {
+    transform: translateY(20vh) translateX(0);
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-110vh) translateX(4vw);
+    opacity: 0;
+  }
+}
+
+@keyframes ail-fall {
+  0% {
+    transform: translateY(-15vh) translateX(0) rotate(0deg);
+    opacity: 0;
+  }
+  12% {
+    opacity: 1;
+  }
+  88% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(115vh) translateX(6vw) rotate(220deg);
+    opacity: 0;
+  }
+}
+
+@keyframes ail-drift {
+  0%,
+  100% {
+    transform: translate(0, 0);
+    opacity: 0.45;
+  }
+  50% {
+    transform: translate(2vw, -3vh);
+    opacity: 0.9;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
 }
