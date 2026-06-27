@@ -1,30 +1,33 @@
-import LandingExperience from "@/components/LandingExperience";
-import NavBar from "@/components/NavBar";
-import Hero from "@/components/Hero";
-import InfoStrip from "@/components/InfoStrip";
-import TimelineSection from "@/components/TimelineSection";
-import WhyJoin from "@/components/WhyJoin";
-import ApplicationsBanner from "@/components/ApplicationsBanner";
-import ApplicationProcess from "@/components/ApplicationProcess";
-import LodgeGrid from "@/components/LodgeGrid";
-import ApplyCTA from "@/components/ApplyCTA";
-import Footer from "@/components/Footer";
+import EntryExperience from "@/components/entry/EntryExperience";
+import NavBar from "@/components/layout/NavBar";
+import Footer from "@/components/layout/Footer";
+import Hero from "@/components/landing/Hero";
+import InfoStrip from "@/components/landing/InfoStrip";
+import ProgrammeTimeline from "@/components/landing/ProgrammeTimeline";
+import WhyJoin from "@/components/landing/WhyJoin";
+import ApplicationsBanner from "@/components/landing/ApplicationsBanner";
+import ApplicationProcess from "@/components/landing/ApplicationProcess";
+import LodgeGrid from "@/components/landing/LodgeGrid";
+import ApplyCTA from "@/components/landing/ApplyCTA";
 
 export default function Home() {
   return (
-    <LandingExperience>
-      <NavBar />
-      <main id="main">
-        <Hero />
-        <InfoStrip />
-        <TimelineSection />
-        <WhyJoin />
-        <ApplicationsBanner />
-        <ApplicationProcess />
-        <LodgeGrid />
-        <ApplyCTA />
-      </main>
-      <Footer />
-    </LandingExperience>
+    <>
+      <EntryExperience />
+      <div id="site">
+        <NavBar />
+        <main>
+          <Hero />
+          <InfoStrip />
+          <WhyJoin />
+          <LodgeGrid />
+          <ProgrammeTimeline />
+          <ApplicationsBanner />
+          <ApplicationProcess />
+          <ApplyCTA />
+        </main>
+        <Footer />
+      </div>
+    </>
   );
 }

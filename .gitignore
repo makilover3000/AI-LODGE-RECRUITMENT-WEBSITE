@@ -42,3 +42,17 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# AI Lodge — working/temp artifacts (not for the repo)
+# (gitignore has no inline comments — keep notes on their own lines)
+# QA screenshot cache
+/.shots/
+# stray screenshots/downloads dumped in repo root (real assets live in public/)
+/*.png
+# manually-downloaded reference images
+/ChatGPT Image*
+# standalone previews, now integrated into the app
+/entry-demo.html
+/smoke-title-demo.html
+# heavy AI-gen source originals — commit the optimized .jpg only
+public/entry/*.png
