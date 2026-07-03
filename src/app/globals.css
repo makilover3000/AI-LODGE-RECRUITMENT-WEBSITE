@@ -59,7 +59,9 @@
 }
 
 /* ------------------------------------------------------------ base */
-:root { color-scheme: light; }
+:root {
+  color-scheme: light;
+}
 
 html {
   scroll-behavior: smooth;
@@ -77,7 +79,10 @@ body {
   text-rendering: optimizeLegibility;
 }
 
-::selection { background: var(--color-teal); color: var(--color-cream-50); }
+::selection {
+  background: var(--color-teal);
+  color: var(--color-cream-50);
+}
 
 /* ------------------------------------------------------------ type helpers */
 .font-display {
@@ -97,7 +102,7 @@ body {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.16em;
-  font-size: 1.05rem;
+  font-size: 1.75rem;
 }
 
 /* ------------------------------------------------------------ textures */
@@ -114,57 +119,122 @@ body {
 }
 /* a soft paper vignette for big sections */
 .paper-vignette {
-  background:
-    radial-gradient(120% 100% at 50% 0%, transparent 60%, rgba(31, 43, 33, 0.08) 100%);
+  background: radial-gradient(
+    120% 100% at 50% 0%,
+    transparent 60%,
+    rgba(31, 43, 33, 0.08) 100%
+  );
 }
 
 /* hand-cut paper edge for sign/cards (irregular) */
 .edge-rough {
   clip-path: polygon(
-    0% 4%, 2% 1%, 30% 2%, 55% 0%, 78% 2%, 99% 1%, 100% 6%,
-    99% 40%, 100% 72%, 98% 99%, 70% 98%, 45% 100%, 20% 98%, 1% 99%, 0% 70%, 1% 35%
+    0% 4%,
+    2% 1%,
+    30% 2%,
+    55% 0%,
+    78% 2%,
+    99% 1%,
+    100% 6%,
+    99% 40%,
+    100% 72%,
+    98% 99%,
+    70% 98%,
+    45% 100%,
+    20% 98%,
+    1% 99%,
+    0% 70%,
+    1% 35%
   );
 }
 
 /* ------------------------------------------------------------ motion */
 @keyframes ail-float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
 }
 @keyframes ail-flicker {
-  0%, 100% { opacity: 0.85; }
-  42% { opacity: 1; }
-  55% { opacity: 0.72; }
-  70% { opacity: 0.95; }
+  0%,
+  100% {
+    opacity: 0.85;
+  }
+  42% {
+    opacity: 1;
+  }
+  55% {
+    opacity: 0.72;
+  }
+  70% {
+    opacity: 0.95;
+  }
 }
 @keyframes ail-rise {
-  0% { transform: translateY(8px) scale(0.98); opacity: 0; }
-  20% { opacity: 1; }
-  100% { transform: translateY(-22px) scale(1.04); opacity: 0; }
+  0% {
+    transform: translateY(8px) scale(0.98);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-22px) scale(1.04);
+    opacity: 0;
+  }
 }
 @keyframes ail-sway {
-  0%, 100% { transform: translateX(0) rotate(0deg); }
-  50% { transform: translateX(6px) rotate(0.6deg); }
+  0%,
+  100% {
+    transform: translateX(0) rotate(0deg);
+  }
+  50% {
+    transform: translateX(6px) rotate(0.6deg);
+  }
 }
 @keyframes ail-cloud-drift {
-  0% { transform: translate3d(-3.5%, 0, 0); }
-  100% { transform: translate3d(3.5%, 0, 0); }
+  0% {
+    transform: translate3d(-3.5%, 0, 0);
+  }
+  100% {
+    transform: translate3d(3.5%, 0, 0);
+  }
 }
 @keyframes ail-dapple {
-  0%, 100% { transform: translate3d(0, 0, 0); opacity: 0.45; }
-  50% { transform: translate3d(2%, -1.2%, 0); opacity: 0.7; }
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+    opacity: 0.45;
+  }
+  50% {
+    transform: translate3d(2%, -1.2%, 0);
+    opacity: 0.7;
+  }
 }
 
-.will-reveal { opacity: 0; transform: translateY(28px); }
+.will-reveal {
+  opacity: 0;
+  transform: translateY(28px);
+}
 
 @media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-  *, *::before, *::after {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
   }
-  .will-reveal { opacity: 1 !important; transform: none !important; }
+  .will-reveal {
+    opacity: 1 !important;
+    transform: none !important;
+  }
 }
 
 /* hide the landing until the splash hands off (set by the inline head script) */

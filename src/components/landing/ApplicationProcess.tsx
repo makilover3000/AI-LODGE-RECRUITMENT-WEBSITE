@@ -3,18 +3,18 @@ import ScrollReveal from "@/components/ui/ScrollReveal";
 const STAGES = [
   {
     n: 1,
-    title: "Recruitment task suite",
-    body: "A standardised set of recruitment tasks — your first taste of the kind of hands-on work the lodges do.",
+    title: "Application form with task suite",
+    body: "Submit your application form along with the required recruitment task suite.",
   },
   {
     n: 2,
-    title: "Solo interviews",
-    body: "Short one-on-one interviews with the captains of every lodge you've indicated interest in.",
+    title: "Group interviews",
+    body: "Short interviews with the captains of your first choice lodge.",
   },
   {
     n: 3,
     title: "Results & allocation",
-    body: "Results are released and lodges are allocated (with any reshuffling) per the schedule.",
+    body: "Results are released and lodges are allocated (with potential reshuffling).",
   },
 ];
 

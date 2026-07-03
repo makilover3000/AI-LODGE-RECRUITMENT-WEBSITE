@@ -23,9 +23,6 @@ export default function Hero() {
           <h1 className="font-display mt-4 text-pine-900 text-hero">
             AI&nbsp;Lodge
           </h1>
-          <p className="font-script mt-4 text-3xl text-roof sm:text-4xl">
-            where curiosity comes to camp
-          </p>
           <p className="mt-6 max-w-xl text-bodylg text-charcoal/85">
             A structured AI/ML learning programme built around a community with a
             shared interest in AI — designed for anyone curious, regardless of
@@ -34,7 +31,7 @@ export default function Hero() {
 
           <div className="mt-8 flex flex-wrap items-center gap-4">
             <Link
-              href="/#apply"
+              href="https://smu.opine.asia/survey?id=d9968e73-86c2-42e2-a2b9-fa7ef7289a3c"
               className="font-display rounded-full bg-teal-deep px-8 py-3.5 text-base tracking-[0.08em] text-cream-50 shadow-[0_4px_0_var(--color-teal-ink)] transition-transform hover:-translate-y-0.5"
             >
               Apply now
