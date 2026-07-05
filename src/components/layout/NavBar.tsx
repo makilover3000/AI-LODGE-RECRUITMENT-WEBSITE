@@ -56,7 +56,7 @@ export default function NavBar() {
             </Link>
           ))}
           <Link
-            href="/#apply"
+            href="https://smu.opine.asia/survey?id=d9968e73-86c2-42e2-a2b9-fa7ef7289a3c"
             className="font-display rounded-full bg-teal-deep px-5 py-2 text-sm tracking-[0.08em] text-cream-50 shadow-[0_3px_0_var(--color-teal-ink)] transition-transform hover:-translate-y-0.5"
           >
             Apply
@@ -108,7 +108,7 @@ export default function NavBar() {
             </Link>
           ))}
           <Link
-            href="/#apply"
+            href="https://smu.opine.asia/survey?id=d9968e73-86c2-42e2-a2b9-fa7ef7289a3c"
             onClick={() => setOpen(false)}
             className="font-display mt-2 rounded-full bg-teal-deep px-5 py-2.5 text-center text-base tracking-[0.08em] text-cream-50"
           >

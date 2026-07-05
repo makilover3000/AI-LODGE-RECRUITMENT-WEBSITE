@@ -37,7 +37,7 @@ export default function ApplyCTA() {
         </p>
         <div className="mt-9 flex flex-wrap justify-center gap-4">
           <Link
-            href="/#apply"
+            href="https://smu.opine.asia/survey?id=d9968e73-86c2-42e2-a2b9-fa7ef7289a3c"
             className="font-display rounded-full bg-glow-deep px-9 py-4 text-lg tracking-[0.06em] text-pine-900 shadow-[0_5px_0_#b97c2c] transition-transform hover:-translate-y-0.5"
           >
             Apply now
@@ -50,7 +50,7 @@ export default function ApplyCTA() {
           </Link>
         </div>
         <p className="mt-6 text-sm text-cream-50/75">
-          Applications open 13 July. Application link to be shared here soon.
+          Applications are open NOW!
         </p>
       </div>
     </section>

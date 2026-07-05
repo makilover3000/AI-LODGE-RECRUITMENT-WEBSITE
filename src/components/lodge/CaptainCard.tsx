@@ -1,3 +1,4 @@
+import Image from "next/image";
 import type { Captain } from "@/data/lodges";
 
 function initials(name: string) {
@@ -16,13 +17,22 @@ export default function CaptainCard({
   return (
     <div className="flex flex-col items-center rounded-2xl border-2 border-pine-900/10 bg-cream-50 p-6 text-center">
       <div
-        className="font-display flex h-20 w-20 items-center justify-center rounded-full text-2xl text-pine-900 uppercase"
-        style={{ background: accent }}
+        className="flex h-20 w-20 items-center justify-center overflow-hidden rounded-full bg-pine-900/10"
+        style={{ backgroundColor: accent }}
         aria-hidden
       >
-        {initials(captain.name)}
+        {/* Replace src with your captain image path */}
+        <Image
+          src={captain.image}
+          alt={`${captain.name} profile photo`}
+          width={64}
+          height={64}
+          className="h-full w-full object-cover"
+        />
       </div>
-      <h3 className="font-display mt-4 text-xl text-pine-900">{captain.name}</h3>
+      <h3 className="font-display mt-4 text-xl text-pine-900">
+        {captain.name}
+      </h3>
       <p className="mt-1 text-sm text-charcoal/80">{captain.detail}</p>
       {hasTelegram ? (
         <a

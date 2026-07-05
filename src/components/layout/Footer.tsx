@@ -18,7 +18,7 @@ export default function Footer() {
               small lodges, peer learning, real projects.
             </p>
             <Link
-              href="/#apply"
+              href="https://smu.opine.asia/survey?id=d9968e73-86c2-42e2-a2b9-fa7ef7289a3c"
               className="font-display mt-6 inline-block rounded-full bg-teal px-6 py-2.5 text-sm tracking-[0.08em] text-pine-900 shadow-[0_3px_0_var(--color-teal-ink)] transition-transform hover:-translate-y-0.5"
             >
               Apply now
@@ -31,7 +31,7 @@ export default function Footer() {
             <Link href="/#lodges" className="py-1 hover:text-teal-hi">Lodges</Link>
             <Link href="/#process" className="py-1 hover:text-teal-hi">How to join</Link>
             <a
-              href="https://smubia.org"
+              href="https://bia-website-six.vercel.app/"
               target="_blank"
               rel="noopener noreferrer"
               className="col-span-2 py-1 hover:text-teal-hi"

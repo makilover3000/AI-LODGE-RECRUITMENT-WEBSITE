@@ -54,7 +54,7 @@ export default function WhyJoin() {
 
         <ScrollReveal className="mt-10">
           <a
-            href="https://smubia.org"
+            href="https://bia-website-six.vercel.app/"
             target="_blank"
             rel="noopener noreferrer"
             className="group inline-flex items-center gap-2 font-semibold text-teal-deep underline-offset-4 hover:underline"
