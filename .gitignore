@@ -54,5 +54,10 @@ next-env.d.ts
 # standalone previews, now integrated into the app
 /entry-demo.html
 /smoke-title-demo.html
+# stray preview exports dumped in repo root
+/*.webp
+# raw captain source photos — only the cropped /public/captains/*.jpg are committed
+/vampire lodge pics/
+/llm lodge pics/
 # heavy AI-gen source originals — commit the optimized .jpg only
 public/entry/*.png

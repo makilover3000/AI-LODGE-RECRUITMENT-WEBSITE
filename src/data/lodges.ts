@@ -19,7 +19,16 @@ export type Week = {
   note?: string;
 };
 
-export type AmbientKind = "stars" | "fireflies" | "dots" | "embers";
+/** each lodge gets its own drifting silhouette (leaves — or bats for Vampire) */
+export type AmbientKind =
+  | "pointed"
+  | "teardrop"
+  | "lance"
+  | "heart"
+  | "round"
+  | "maple"
+  | "oval"
+  | "bat";
 
 export type Lodge = {
   slug: string;
@@ -27,13 +36,19 @@ export type Lodge = {
   tagline: string;
   level: "Beginner" | "Beginner–Intermediate" | "Intermediate";
   forWho: string;
+  /** short "who it's for" shown on the lodge card; falls back to forWho */
+  forWhoCard?: string;
   why: string;
   topics: string[];
+  /** short concept tags for the lodge card; falls back to topics.slice(0, 3) */
+  cardTags?: string[];
   captains: Captain[];
   weeks: Week[];
   ambient: AmbientKind;
   /** palette accent (hex) used for per-lodge tinting */
   accent: string;
+  /** per-lodge: pulsing crimson halo on the ambient particles (Vampire only) */
+  ambientGlow?: boolean;
   /** application status — absent is treated as "open" (see isClosed) */
   status?: "open" | "closed";
   /** programme goals, shown on the lodge overview when present */
@@ -45,8 +60,7 @@ export type Lodge = {
 /** A lodge not accepting applications this cycle (still shown for transparency). */
 export const isClosed = (l: Lodge) => l.status === "closed";
 
-const placeholderCaptains = (...captains: Captain[]): Captain[] => captains;
-
+/** builds the standard 8-week trail + Recess hack day + Week 10 finals */
 const weeks = (topics: string[]): Week[] => [
   ...topics.map((t, i) => ({ label: `Week ${i + 1}`, topic: t })),
   { label: "Recess", topic: "Lodge hack day" },
@@ -67,7 +81,7 @@ export const lodges: Lodge[] = [
       "The latest AI tools",
       "Tech news & trends",
     ],
-    captains: placeholderCaptains(
+    captains: [
       {
         name: "Chris",
         detail: "SOSS / Year 3",
@@ -86,7 +100,7 @@ export const lodges: Lodge[] = [
         telegram: "Adamsandler256",
         image: "/captains/brod.jpg",
       },
-    ),
+    ],
     weeks: weeks([
       "ML Fundamentals",
       "Prompt Engineering",
@@ -97,23 +111,32 @@ export const lodges: Lodge[] = [
       "Vibecoding",
       "Hackathon prep",
     ]),
-    ambient: "fireflies",
+    ambient: "teardrop",
     accent: "#FFB24D",
   },
   {
     slug: "vampire",
     name: "Vampire Lodge",
-    tagline: "From notebooks to working apps.",
+    tagline: "From zero to deployed AI agent.",
     level: "Beginner–Intermediate",
-    forWho: "Open to all levels of experience, regardless of faculty",
-    why: "Some Python helps; light math (no heavy proofs). We focus on building and deploying.",
+    forWho:
+      "Students who want to go from zero to building real AI products — no CS degree needed, just the hunger to ship something. While everyone else is learning to use AI, you'll learn to build the infrastructure that makes AI actually work.",
+    forWhoCard:
+      "For anyone who wants to stop using AI and start building with it.",
+    why: "You'll walk away with a live AI agent you built and deployed yourself, something real you can show recruiters and talk about in interviews. We teach you the whole stack, not just calling a model but wiring the tools, memory and orchestration that make it useful.",
     topics: [
-      "APIs & tooling",
-      "Building with LLMs",
-      "Retrieval & RAG",
-      "Shipping a demo",
+      "The AI harness — tools, memory, and orchestration around the model",
+      "LLM APIs and function calling",
+      "Building multi-tool AI agents with CrewAI",
+      "RAG and vector memory",
+      "Deploying real AI products to production",
     ],
-    captains: placeholderCaptains(
+    cardTags: [
+      "APIs & Function Calling",
+      "Building AI Agents",
+      "RAG & Deployment",
+    ],
+    captains: [
       {
         name: "Vamsi",
         detail: "SOB / Year 3",
@@ -130,21 +153,27 @@ export const lodges: Lodge[] = [
         name: "Makendra",
         detail: "SCIS (IS) / Year 2",
         telegram: "chaneldebleu",
-        image: "/captains/makendra.jpg",
+        image: "/captains/makendra-3.jpg",
       },
-    ),
-    weeks: weeks([
-      "Tooling & environments",
-      "Calling model APIs",
-      "Prompt engineering",
-      "Retrieval & RAG",
-      "Building an interface",
-      "Project sprint I",
-      "Project sprint II",
-      "Polish & demo",
-    ]),
-    ambient: "stars",
-    accent: "#5EBAAB",
+    ],
+    weeks: [
+      { label: "Week 1", topic: "The Awakening — AI Landscape & LLM Fundamentals" },
+      { label: "Week 2", topic: "The Hunt — Vibe Coding & AI-Assisted Development" },
+      { label: "Week 3", topic: "Hypnosis — Prompt Engineering & Structured Outputs" },
+      { label: "Week 4", topic: "The Feed — LLM APIs & Function Calling" },
+      { label: "Week 5", topic: "The Lair — Building Your First AI Agent" },
+      { label: "Week 6", topic: "The Swarm — Multi-Tool Agents & Orchestration" },
+      { label: "Week 7", topic: "Cast No Shadow — RAG & Vector Memory" },
+      { label: "Week 8", topic: "The Bite — Deployment & Project Polish" },
+      { label: "Week 9", topic: "The Blood Hunt — Lodge Hack Day" },
+      {
+        label: "Week 10",
+        topic: "The Coven Rises — Hackathon Finals & Project Exhibition",
+      },
+    ],
+    ambient: "bat",
+    accent: "#8B1A1A", // blood red — Vampire Lodge
+    ambientGlow: true, // pulsing crimson halo on the particles
   },
   {
     slug: "kag",
@@ -160,7 +189,7 @@ export const lodges: Lodge[] = [
       "Training dynamics",
       "Transformers",
     ],
-    captains: placeholderCaptains(
+    captains: [
       {
         name: "Att",
         detail: "SCIS (CS) / Year 2",
@@ -179,7 +208,7 @@ export const lodges: Lodge[] = [
         telegram: "GMSidik",
         image: "/captains/gabriel.jpg",
       },
-    ),
+    ],
     weeks: weeks([
       "Math refresher",
       "Neural nets from scratch",
@@ -190,7 +219,7 @@ export const lodges: Lodge[] = [
       "Research project II",
       "Write-up & demo",
     ]),
-    ambient: "dots",
+    ambient: "lance",
     accent: "#679D86",
   },
   {
@@ -202,7 +231,7 @@ export const lodges: Lodge[] = [
       "For those who are interested in exploring different areas of AI, and build interesting projects.",
     why: "Learn how to use AI tools and build projects with them, while also understanding the underlying concepts and mechanics.",
     topics: ["Agentic Workflows", "Multimodal AI", "LLM Applications"],
-    captains: placeholderCaptains(
+    captains: [
       {
         name: "Sonya",
         detail: "SCIS (IS) / Year 2",
@@ -221,7 +250,7 @@ export const lodges: Lodge[] = [
         telegram: "samtancy",
         image: "/captains/samuel.jpg",
       },
-    ),
+    ],
     weeks: weeks([
       "ML/AI fundamentals",
       "Prompt engineering & LLM Security",
@@ -232,7 +261,7 @@ export const lodges: Lodge[] = [
       "Multimodal AI",
       "Tensorflow",
     ]),
-    ambient: "embers",
+    ambient: "maple",
     accent: "#C06B4D",
   },
   {
@@ -248,7 +277,7 @@ export const lodges: Lodge[] = [
       "Predictive models",
       "Dashboards",
     ],
-    captains: placeholderCaptains(
+    captains: [
       {
         name: "Wanyu",
         detail: "SOE / Year 2",
@@ -267,7 +296,7 @@ export const lodges: Lodge[] = [
         telegram: "SMKxx1",
         image: "/captains/shahad.jpg",
       },
-    ),
+    ],
     weeks: weeks([
       "Data foundations",
       "Cleaning & wrangling",
@@ -278,7 +307,7 @@ export const lodges: Lodge[] = [
       "Analysis project II",
       "Dashboard & demo",
     ]),
-    ambient: "fireflies",
+    ambient: "heart",
     accent: "#FFCF87",
   },
   {
@@ -289,7 +318,7 @@ export const lodges: Lodge[] = [
     forWho: "Builders who want to push into agents, tools, and automation.",
     why: "Comfortable Python expected. We build multi-step agents and wire up real tools.",
     topics: ["Agent design", "Tool use", "Orchestration", "Reliability"],
-    captains: placeholderCaptains(
+    captains: [
       {
         name: "Sanjana",
         detail: "SCIS (IS) / Year 2",
@@ -308,7 +337,7 @@ export const lodges: Lodge[] = [
         telegram: "KyleJuu",
         image: "/captains/kyle.jpg",
       },
-    ),
+    ],
     weeks: weeks([
       "Agent foundations",
       "Tool use & function calling",
@@ -319,7 +348,7 @@ export const lodges: Lodge[] = [
       "Agent project II",
       "Demo day prep",
     ]),
-    ambient: "stars",
+    ambient: "round",
     accent: "#3BB9AF",
   },
   {
@@ -342,7 +371,7 @@ export const lodges: Lodge[] = [
       "Transformers",
       "LLM APIs",
     ],
-    captains: placeholderCaptains(
+    captains: [
       {
         name: "Greg",
         detail: "SCIS (CS) / Year 3",
@@ -355,7 +384,7 @@ export const lodges: Lodge[] = [
         telegram: "ihsanaeong",
         image: "/captains/ihsan.jpg",
       },
-    ),
+    ],
     weeks: [
       {
         label: "Week 1",
@@ -382,7 +411,7 @@ export const lodges: Lodge[] = [
       },
     ],
     sessionLength: "~3 hours per session",
-    ambient: "dots",
+    ambient: "oval",
     accent: "#8A93A6",
   },
 ];

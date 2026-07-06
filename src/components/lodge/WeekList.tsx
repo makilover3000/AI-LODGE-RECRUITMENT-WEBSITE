@@ -2,16 +2,27 @@ import type { Lodge } from "@/data/lodges";
 import CaptainCard from "./CaptainCard";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 
+const COUNT_WORDS = ["", "One", "Two", "Three", "Four", "Five"];
+
 export default function WeekList({ lodge }: { lodge: Lodge }) {
+  const captainCount = lodge.captains.length;
+  const countWord = COUNT_WORDS[captainCount] ?? String(captainCount);
   return (
     <section className="bg-cream-100 py-20">
       <div className="mx-auto max-w-5xl px-5 sm:px-8">
         {/* captains */}
         <p className="eyebrow text-teal-ink">Your captains</p>
         <h2 className="font-display mt-3 text-h2 text-pine-900">
-          Three captains, one lodge
+          {countWord} captains, one lodge
         </h2>
-        <ScrollReveal stagger={0.1} className="mt-8 grid gap-5 sm:grid-cols-3">
+        <ScrollReveal
+          stagger={0.1}
+          className={`mt-8 grid gap-5 ${
+            captainCount === 2
+              ? "mx-auto max-w-2xl sm:grid-cols-2"
+              : "sm:grid-cols-3"
+          }`}
+        >
           {lodge.captains.map((c, i) => (
             <CaptainCard key={i} captain={c} accent={lodge.accent} />
           ))}

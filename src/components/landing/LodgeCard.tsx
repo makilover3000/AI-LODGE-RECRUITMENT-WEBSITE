@@ -7,6 +7,9 @@ const LEVEL_STYLES: Record<Lodge["level"], string> = {
   Intermediate: "bg-roof-dark text-cream-50",
 };
 
+const BADGE =
+  "inline-flex items-center whitespace-nowrap rounded-full px-3 py-1 text-[0.7rem] font-bold uppercase leading-none tracking-[0.14em]";
+
 export default function LodgeCard({ lodge }: { lodge: Lodge }) {
   const closed = isClosed(lodge);
   return (
@@ -40,16 +43,16 @@ export default function LodgeCard({ lodge }: { lodge: Lodge }) {
 
       {/* body */}
       <div className="flex flex-1 flex-col p-6">
-        <span
-          className={`eyebrow self-start rounded-full px-3 py-1 ${LEVEL_STYLES[lodge.level]}`}
-        >
+        <span className={`${BADGE} self-start ${LEVEL_STYLES[lodge.level]}`}>
           {lodge.level}
         </span>
         <p className="mt-3 text-bodylg text-pine-900">{lodge.tagline}</p>
-        <p className="mt-2 text-sm text-charcoal/90">{lodge.forWho}</p>
+        <p className="mt-2 text-sm text-charcoal/90">
+          {lodge.forWhoCard ?? lodge.forWho}
+        </p>
 
         <div className="mt-4 flex flex-wrap gap-2">
-          {lodge.topics.slice(0, 3).map((t) => (
+          {(lodge.cardTags ?? lodge.topics.slice(0, 3)).map((t) => (
             <span
               key={t}
               className="rounded-full bg-pine-900/10 px-2.5 py-1 text-xs font-semibold text-pine-700"
