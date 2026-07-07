@@ -37,7 +37,7 @@ export default function NavBar() {
             alt="SMU BIA"
             width={284}
             height={86}
-            className="h-7 w-auto"
+            className="h-7 w-auto invert"
             priority
           />
           <span className="font-display text-pine-900 text-lg leading-none tracking-[0.06em]">
