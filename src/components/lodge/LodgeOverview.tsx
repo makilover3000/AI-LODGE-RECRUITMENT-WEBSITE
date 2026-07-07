@@ -13,8 +13,8 @@ export default function LodgeOverview({ lodge }: { lodge: Lodge }) {
             </h2>
             <p className="mt-4 text-bodylg text-charcoal/90">{lodge.forWho}</p>
 
-            <h3 className="font-display mt-8 text-h3 text-pine-900">Why join</h3>
-            <p className="mt-3 text-charcoal/90">{lodge.why}</p>
+            <h3 className="font-display mt-8 text-h2 text-pine-900">Why join</h3>
+            <p className="mt-4 text-bodylg text-charcoal/90">{lodge.why}</p>
 
             {lodge.goals && lodge.goals.length > 0 && (
               <>

@@ -59,5 +59,11 @@ next-env.d.ts
 # raw captain source photos — only the cropped /public/captains/*.jpg are committed
 /vampire lodge pics/
 /llm lodge pics/
+/HacKStreet Boys PICS/
+/kag lodge pics/
+/wss lodge pics/
 # heavy AI-gen source originals — commit the optimized .jpg only
 public/entry/*.png
+# markdown notes — keep local only, do not track (README.md stays tracked)
+*.md
+!README.md
