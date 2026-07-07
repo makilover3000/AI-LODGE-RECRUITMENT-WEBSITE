@@ -1,7 +1,20 @@
-import { lodges } from "@/data/lodges";
+import { lodges, isClosed, type Lodge } from "@/data/lodges";
 import LodgeCard from "./LodgeCard";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 import Treeline from "@/components/ui/Treeline";
+
+// Cards run easy -> hard by skill level, with closed lodges (e.g. LLM) pinned
+// last. Sort is stable, so lodges sharing a level keep their order in lodges.ts.
+const LEVEL_RANK: Record<Lodge["level"], number> = {
+  Beginner: 0,
+  "Beginner–Intermediate": 1,
+  Intermediate: 2,
+};
+
+const orderedLodges = [...lodges].sort((a, b) => {
+  if (isClosed(a) !== isClosed(b)) return isClosed(a) ? 1 : -1;
+  return LEVEL_RANK[a.level] - LEVEL_RANK[b.level];
+});
 
 export default function LodgeGrid() {
   return (
@@ -23,7 +36,7 @@ export default function LodgeGrid() {
           stagger={0.1}
           className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
         >
-          {lodges.map((lodge) => (
+          {orderedLodges.map((lodge) => (
             <LodgeCard key={lodge.slug} lodge={lodge} />
           ))}
         </ScrollReveal>
