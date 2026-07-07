@@ -220,6 +220,13 @@ body {
   transform: translateY(28px);
 }
 
+/* On Enter, freeze the scene's ambient CSS loops so `.ail-world` becomes a static
+   texture the GPU can slide cheaply — no per-frame repaint during the wind-sweep. */
+.ail-frozen,
+.ail-frozen * {
+  animation-play-state: paused !important;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

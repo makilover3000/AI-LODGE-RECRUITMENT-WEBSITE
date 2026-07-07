@@ -87,7 +87,7 @@ const WIND_ARMS: WindArm[] = [
     heightVh: 66,
     opacity: 0.5,
     delay: 0,
-    blur: 26,
+    blur: 14,
     smear: 1.6,
   },
   {
@@ -99,7 +99,7 @@ const WIND_ARMS: WindArm[] = [
     heightVh: 70,
     opacity: 0.42,
     delay: 95,
-    blur: 36,
+    blur: 18,
     smear: 1.85,
   },
   {
@@ -111,7 +111,7 @@ const WIND_ARMS: WindArm[] = [
     heightVh: 52,
     opacity: 0.46,
     delay: 200,
-    blur: 22,
+    blur: 12,
     smear: 1.5,
   },
 ];

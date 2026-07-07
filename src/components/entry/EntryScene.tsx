@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Image from "next/image";
 import gsap from "gsap";
 import WindSweep from "./WindSweep";
 import { BLUR_DESKTOP, BLUR_PORTRAIT } from "./blur";
@@ -61,7 +60,6 @@ export default function EntryScene({
   }, []);
 
   const T = isDesktop ? TUNE_DESKTOP : TUNE_MOBILE;
-  const baseSrc = isDesktop ? "/entry/entry-hd.jpg" : "/entry/entry-hd-portrait.jpg";
   const webSrc = isDesktop ? "/entry/entry-web.jpg" : "/entry/entry-web-portrait.jpg";
 
   // ambient: evolving smoke turbulence + mouse parallax
@@ -171,7 +169,11 @@ export default function EntryScene({
       }}
     >
       {/* THE WORLD — everything in here moves together; slides off to reveal the landing */}
-      <div className="ail-world absolute inset-0 bg-pine-900 will-change-transform">
+      <div
+        className={`ail-world absolute inset-0 bg-pine-900 will-change-transform${
+          entering ? " ail-frozen" : ""
+        }`}
+      >
         {/* base painting (optimized). The blur preview is its own underlay so the
             sharp image can fade in OVER it (smooth focus-pull, no snap). The blur
             and sharp share this parallax layer, so they stay perfectly aligned. */}
@@ -184,19 +186,23 @@ export default function EntryScene({
             backgroundPosition: "center",
           }}
         >
-          <Image
-            key={baseSrc}
-            src={baseSrc}
-            alt="A log cabin glowing on a forested peak at golden hour, with 'AI Lodge' written in chimney smoke."
-            fill
-            priority
-            quality={90}
-            sizes="100vw"
-            onLoad={() => setBaseLoaded(true)}
-            className={`object-cover object-center transition-opacity duration-700 ease-out ${
-              baseLoaded ? "opacity-100" : "opacity-0"
-            }`}
-          />
+          {/* Native <picture>: the browser fetches ONLY the right orientation at
+              parse time (no JS swap, no SSR portrait→landscape refetch/remount),
+              served as the raw already-optimized jpg (no /_next/image cold-optimize
+              on Vercel). Sharp image fades in over its blur underlay (focus-pull). */}
+          <picture>
+            <source media="(min-width: 1024px)" srcSet="/entry/entry-hd.jpg" />
+            <img
+              src="/entry/entry-hd-portrait.jpg"
+              alt="A log cabin glowing on a forested peak at golden hour, with 'AI Lodge' written in chimney smoke."
+              onLoad={() => setBaseLoaded(true)}
+              decoding="async"
+              fetchPriority="high"
+              className={`absolute inset-0 h-full w-full object-cover object-center transition-opacity duration-700 ease-out ${
+                baseLoaded ? "opacity-100" : "opacity-0"
+              }`}
+            />
+          </picture>
         </div>
 
         {/* drifting cloud-haze across the sky */}
@@ -322,7 +328,7 @@ export default function EntryScene({
         />
 
         {/* fireflies — inside the world so they ride the gust too */}
-        {!reducedMotion && <Fireflies />}
+        {!reducedMotion && <Fireflies stop={entering} />}
       </div>
 
       {/* the wind-sweep gust (only during the transition) */}
@@ -373,8 +379,12 @@ export default function EntryScene({
   );
 }
 
-function Fireflies() {
+function Fireflies({ stop }: { stop: boolean }) {
   const ref = useRef<HTMLCanvasElement>(null);
+  const stopRef = useRef(false);
+  useEffect(() => {
+    stopRef.current = stop;
+  }, [stop]);
   useEffect(() => {
     const canvas = ref.current;
     const ctx = canvas?.getContext("2d");
@@ -405,6 +415,7 @@ function Fireflies() {
     let raf = 0;
     let t = 0;
     const draw = () => {
+      if (stopRef.current) return; // stop the loop on Enter — free the GPU for the sweep
       t += 0.016;
       ctx.clearRect(0, 0, w, h);
       for (const p of ps) {
