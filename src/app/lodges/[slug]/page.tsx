@@ -1,10 +1,11 @@
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import Link from "next/link";
 import type { Metadata } from "next";
-import { lodges, getLodge, isClosed } from "@/data/lodges";
+import { lodges, getLodge, isClosed, LODGE_SLUG_ALIASES } from "@/data/lodges";
 import NavBar from "@/components/layout/NavBar";
 import Footer from "@/components/layout/Footer";
 import LodgeHero from "@/components/lodge/LodgeHero";
+import LodgeTicker from "@/components/lodge/LodgeTicker";
 import LodgeOverview from "@/components/lodge/LodgeOverview";
 import WeekList from "@/components/lodge/WeekList";
 import ApplyCTA from "@/components/landing/ApplyCTA";
@@ -33,6 +34,7 @@ export default async function LodgePage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
+  if (LODGE_SLUG_ALIASES[slug]) redirect(`/lodges/${LODGE_SLUG_ALIASES[slug]}`);
   const lodge = getLodge(slug);
   if (!lodge) notFound();
 
@@ -41,6 +43,7 @@ export default async function LodgePage({
       <NavBar />
       <main>
         <LodgeHero lodge={lodge} />
+        <LodgeTicker lodge={lodge} />
         <LodgeOverview lodge={lodge} />
         <WeekList lodge={lodge} />
         {isClosed(lodge) ? (

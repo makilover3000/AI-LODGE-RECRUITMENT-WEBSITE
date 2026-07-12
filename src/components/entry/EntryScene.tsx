@@ -177,15 +177,20 @@ export default function EntryScene({
         {/* base painting (optimized). The blur preview is its own underlay so the
             sharp image can fade in OVER it (smooth focus-pull, no snap). The blur
             and sharp share this parallax layer, so they stay perfectly aligned. */}
-        <div
-          className="absolute inset-0"
-          data-parallax="0.2"
-          style={{
-            backgroundImage: `url(${isDesktop ? BLUR_DESKTOP : BLUR_PORTRAIT})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
-        >
+        <div className="absolute inset-0 overflow-hidden" data-parallax="0.2">
+          {/* blur underlay as its own layer so it can carry a CSS blur() —
+              the tiny placeholder upscales as soft focus, not JPEG blocks */}
+          <div
+            aria-hidden
+            className="absolute inset-0"
+            style={{
+              backgroundImage: `url(${isDesktop ? BLUR_DESKTOP : BLUR_PORTRAIT})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              filter: "blur(10px)",
+              transform: "scale(1.06)",
+            }}
+          />
           {/* Native <picture>: the browser fetches ONLY the right orientation at
               parse time (no JS swap, no SSR portrait→landscape refetch/remount),
               served as the raw already-optimized jpg (no /_next/image cold-optimize
@@ -198,7 +203,7 @@ export default function EntryScene({
               onLoad={() => setBaseLoaded(true)}
               decoding="async"
               fetchPriority="high"
-              className={`absolute inset-0 h-full w-full object-cover object-center transition-opacity duration-700 ease-out ${
+              className={`absolute inset-0 h-full w-full object-cover object-center transition-opacity duration-500 ease-out ${
                 baseLoaded ? "opacity-100" : "opacity-0"
               }`}
             />

@@ -215,6 +215,160 @@ body {
   }
 }
 
+/* warm-up "tube ignition" flicker — reused by the card mini mark on hover.
+   steps(1) snaps the flashes like a real sign lighting up. Max two hard flashes
+   per second (WCAG 2.3.1 allows ≤3); the final dip stays ≥0.8 so it reads as a
+   stutter, not a flash. prefers-reduced-motion collapses it via the global rule. */
+@keyframes ail-neon-on {
+  0% {
+    opacity: 0;
+  }
+  6% {
+    opacity: 0.9;
+  }
+  10% {
+    opacity: 0.12;
+  }
+  26% {
+    opacity: 1;
+  }
+  31% {
+    opacity: 0.25;
+  }
+  45% {
+    opacity: 1;
+  }
+  58% {
+    opacity: 0.82;
+  }
+  66%,
+  100% {
+    opacity: 1;
+  }
+}
+
+/* ============================================================
+   Lodge marks — the REAL logo (public/logos/<slug>.png), painted in the lodge
+   accent via CSS mask. Pixel-accurate by construction (the mask IS the art), so
+   this retires the old hand-traced neon paths. `--mk` = logo url, `--c` = accent.
+   ============================================================ */
+.ail-mask {
+  -webkit-mask: var(--mk) center / contain no-repeat;
+  mask: var(--mk) center / contain no-repeat;
+}
+
+/* fills used behind the mask */
+.ail-fill-accent {
+  background-color: var(--c);
+}
+.ail-fill-core {
+  /* top-lit sheen so the emblem reads as a lit object, not a flat sticker */
+  background: linear-gradient(
+    170deg,
+    color-mix(in srgb, var(--c) 55%, #fff8ec),
+    var(--c) 62%,
+    color-mix(in srgb, var(--c) 78%, #1c130c)
+  );
+}
+
+/* EMBLEM — the big hero statement. A pulsing accent halo (glow) under a crisp
+   lit core. Following the neon lesson: the drop-shadow filter is STATIC and only
+   the halo's OPACITY animates, so weak phones composite the pulse cheaply. The
+   filter sits on the wrapper (not the masked child) so the glow isn't clipped. */
+.ail-emblem {
+  position: relative;
+  display: block;
+  animation: ail-float 7s ease-in-out infinite;
+}
+.ail-emblem-halo,
+.ail-emblem-core {
+  position: absolute;
+  inset: 0;
+}
+.ail-emblem-halo {
+  filter: drop-shadow(0 0 8px var(--c)) drop-shadow(0 0 22px var(--c))
+    drop-shadow(0 0 48px var(--c));
+  animation: ail-emblem-breathe 3.6s ease-in-out infinite;
+}
+.ail-emblem .ail-mask {
+  position: absolute;
+  inset: 0;
+}
+@keyframes ail-emblem-breathe {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.62;
+  }
+}
+
+/* MINI — the card chip: crisp core + small static glow (filter on the wrapper).
+   No `position` here: the caller positions it (e.g. `absolute` on the card), and
+   forcing position in this unlayered rule would beat Tailwind's positioning
+   utilities (unlayered CSS wins over @layer utilities). The absolute child still
+   resolves against it because `absolute` is itself a positioned context. */
+.ail-mark-mini {
+  display: block;
+  filter: drop-shadow(0 0 4px var(--c)) drop-shadow(0 0 11px var(--c));
+}
+.ail-mark-mini .ail-mask {
+  position: absolute;
+  inset: 0;
+}
+/* re-ignite flicker when the parent card (`.group`) is hovered */
+.group:hover .ail-mark-mini .ail-mask {
+  animation: ail-neon-on 1.1s steps(1, end) both;
+}
+
+/* ============================================================
+   Belts — one seamless track duplicated 2x, translated -50% (transform only).
+   Used by the landing "FROM THE LODGE" photo belt and the per-lodge logo ticker.
+   ============================================================ */
+@keyframes ail-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+.ail-belt-track {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+  animation: ail-marquee var(--belt-dur, 55s) linear infinite;
+}
+/* pause is a progressive bonus (hover fails on touch — the belt still reads) */
+.ail-belt:hover .ail-belt-track,
+.ail-belt:hover .ail-ticker-track {
+  animation-play-state: paused;
+}
+
+/* per-lodge logo ticker: faster, tiny accent marks with a gentle shimmer */
+.ail-ticker-track {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+  animation: ail-marquee var(--belt-dur, 22s) linear infinite;
+}
+.ail-ticker-mark {
+  /* lift dark accents (vampire red, llm slate) so they read on the pine band */
+  background-color: color-mix(in srgb, var(--c) 84%, #fff8ec);
+  opacity: 0.85;
+  animation: ail-shimmer 2.6s ease-in-out infinite;
+}
+@keyframes ail-shimmer {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
 .will-reveal {
   opacity: 0;
   transform: translateY(28px);
@@ -240,6 +394,13 @@ body {
   }
   .will-reveal {
     opacity: 1 !important;
+    transform: none !important;
+  }
+  /* pin belts to their start so reduced-motion users see a filled static strip
+     (not a frozen mid-scroll frame with unloaded lazy tiles) */
+  .ail-belt-track,
+  .ail-ticker-track {
+    animation: none !important;
     transform: none !important;
   }
 }

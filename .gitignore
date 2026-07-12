@@ -64,6 +64,10 @@ next-env.d.ts
 /wss lodge pics/
 # heavy AI-gen source originals — commit the optimized .jpg only
 public/entry/*.png
+# lodge logo source art — commit only the baked masks in public/logos/
+/logos/
+# past-moment source photos — commit only the optimized public/moments/*.webp
+/ai-lodge-past-images/
 # markdown notes — keep local only, do not track (README.md stays tracked)
 *.md
 !README.md

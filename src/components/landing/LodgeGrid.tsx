@@ -27,8 +27,7 @@ export default function LodgeGrid() {
           </h2>
           <p className="mt-4 text-bodylg text-charcoal/90">
             Each lodge has its own focus, vibe, and captains — from total
-            beginners to the frontier. Lodge names and details are being
-            finalised.
+            beginners to the frontier.
           </p>
         </div>
 

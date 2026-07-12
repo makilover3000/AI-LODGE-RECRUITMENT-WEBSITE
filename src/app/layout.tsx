@@ -53,11 +53,14 @@ export default function RootLayout({
     >
       <head>
         {/* Runs before first paint: if the splash will play this session, hide the
-            landing immediately so it never flashes behind the entry. */}
+            landing immediately so it never flashes behind the entry — and start
+            fetching the scene painting NOW, in parallel with the JS bundle,
+            instead of after hydration (this was the "2s of blur" on fresh loads).
+            No-ops entirely on return visits / ?nosplash, so no wasted bytes. */}
         <script
           dangerouslySetInnerHTML={{
             __html:
-              "(function(){try{if(!sessionStorage.getItem('ail-splash-seen')&&location.search.indexOf('nosplash')===-1)document.documentElement.setAttribute('data-splash','1')}catch(e){}})()",
+              "(function(){try{if(!sessionStorage.getItem('ail-splash-seen')&&location.search.indexOf('nosplash')===-1){document.documentElement.setAttribute('data-splash','1');var l=document.createElement('link');l.rel='preload';l.as='image';l.fetchPriority='high';l.href=matchMedia('(min-width: 1024px)').matches?'/entry/entry-hd.jpg':'/entry/entry-hd-portrait.jpg';document.head.appendChild(l)}}catch(e){}})()",
           }}
         />
       </head>

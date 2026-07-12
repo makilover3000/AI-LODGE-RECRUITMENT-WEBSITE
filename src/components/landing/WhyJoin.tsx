@@ -1,3 +1,4 @@
+import Image from "next/image";
 import CampIcon, { CampIconName } from "@/components/ui/CampIcon";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 
@@ -28,11 +29,23 @@ export default function WhyJoin() {
   return (
     <section className="relative bg-cream-100 py-24">
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
-        <div className="max-w-2xl">
-          <p className="eyebrow text-teal-ink">Why join a lodge</p>
-          <h2 className="font-display mt-3 text-pine-900 text-h1">
-            Learn AI the cozy way — together
-          </h2>
+        <div className="grid gap-8 lg:grid-cols-[1.5fr_1fr] lg:items-end">
+          <div className="max-w-2xl">
+            <p className="eyebrow text-teal-ink">Why join a lodge</p>
+            <h2 className="font-display mt-3 text-pine-900 text-h1">
+              Learn AI the cozy way — together
+            </h2>
+          </div>
+          {/* a warm candid from a past lodge — desktop-only accent */}
+          <div className="relative hidden aspect-[4/3] rotate-[-1.5deg] overflow-hidden rounded-2xl border-4 border-cream-50 shadow-[0_18px_44px_-22px_rgba(31,43,33,0.7)] lg:block">
+            <Image
+              src="/moments/awsome-group.webp"
+              alt="Members of a past AI Lodge together"
+              fill
+              sizes="380px"
+              className="object-cover"
+            />
+          </div>
         </div>
 
         <ScrollReveal stagger={0.14} className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
@@ -54,7 +67,7 @@ export default function WhyJoin() {
 
         <ScrollReveal className="mt-10">
           <a
-            href="https://bia-website-six.vercel.app/Projects"
+            href="https://smubia.com/Projects?badge=AI%20Lodge"
             target="_blank"
             rel="noopener noreferrer"
             className="group inline-flex items-center gap-2 font-semibold text-teal-deep underline-offset-4 hover:underline"

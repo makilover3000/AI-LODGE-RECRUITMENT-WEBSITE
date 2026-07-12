@@ -5,6 +5,7 @@ import Hero from "@/components/landing/Hero";
 import InfoStrip from "@/components/landing/InfoStrip";
 import ProgrammeTimeline from "@/components/landing/ProgrammeTimeline";
 import WhyJoin from "@/components/landing/WhyJoin";
+import MomentsBelt from "@/components/landing/MomentsBelt";
 import ApplicationsBanner from "@/components/landing/ApplicationsBanner";
 import ApplicationProcess from "@/components/landing/ApplicationProcess";
 import LodgeGrid from "@/components/landing/LodgeGrid";
@@ -38,6 +39,7 @@ export default function Home() {
           <Hero />
           <InfoStrip />
           <WhyJoin />
+          <MomentsBelt />
           <LodgeGrid />
           <ProgrammeTimeline />
           <ApplicationsBanner />

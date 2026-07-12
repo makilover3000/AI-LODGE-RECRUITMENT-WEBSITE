@@ -20,7 +20,7 @@ export default function InfoStrip() {
           </h2>
           <p className="mt-5 text-bodylg text-cream-50/80">
             AI Lodge gathers small groups of curious students into cozy
-            &ldquo;lodges&rdquo; — <strong className="text-cream-50">8–12 lodgers</strong>{" "}
+            &ldquo;lodges&rdquo; — <strong className="text-cream-50">up to 10 lodgers</strong>{" "}
             guided by <strong className="text-cream-50">3 captains</strong> — to
             learn AI together, hands-on, over eight weeks. No prior experience
             required. Just bring your curiosity.

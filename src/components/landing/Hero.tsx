@@ -46,8 +46,8 @@ export default function Hero() {
 
           <dl className="mt-10 flex flex-wrap gap-y-4 [&>div+div]:ml-7 [&>div+div]:border-l [&>div+div]:border-pine-900/20 [&>div+div]:pl-7">
             <div>
-              <dt className="font-display text-3xl text-pine-900">8–12</dt>
-              <dd className="text-sm font-semibold text-pine-900/75">lodgers / lodge</dd>
+              <dt className="font-display text-3xl text-pine-900">10</dt>
+              <dd className="text-sm font-semibold text-pine-900/75">max lodgers / lodge</dd>
             </div>
             <div>
               <dt className="font-display text-3xl text-pine-900">3</dt>
@@ -63,16 +63,14 @@ export default function Hero() {
         {/* framed painted poster */}
         <div className="relative mx-auto w-full max-w-md lg:max-w-none">
           <div className="relative rotate-[1.4deg] rounded-[14px] border-[6px] border-cream-50 bg-cream-50 shadow-[0_22px_50px_-18px_rgba(31,43,33,0.6)]">
-            <div className="overflow-hidden rounded-[8px] border border-pine-900/15">
+            <div className="relative aspect-[4/5] overflow-hidden rounded-[8px] border border-pine-900/15">
               <Image
-                src="/entry/hero-poster.jpg"
-                alt="A log cabin perched on a rocky peak at golden hour, warm light in the windows and smoke rising from the chimney."
-                width={820}
-                height={941}
+                src="/moments/demo-candid-group.webp"
+                alt="AI Lodge members together on demo day, showing off what they built."
+                fill
                 priority
-                unoptimized
                 sizes="(max-width: 1024px) 90vw, 460px"
-                className="h-auto w-full"
+                className="object-cover"
               />
             </div>
           </div>

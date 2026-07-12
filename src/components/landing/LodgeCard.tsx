@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { isClosed, type Lodge } from "@/data/lodges";
+import LodgeMark from "@/components/lodge/LodgeMark";
 
 const LEVEL_STYLES: Record<Lodge["level"], string> = {
   Beginner: "bg-mist-deep text-pine-900",
@@ -26,10 +27,13 @@ export default function LodgeCard({ lodge }: { lodge: Lodge }) {
         style={{ backgroundImage: "url('/textures/cabin-log.jpg')" }}
       >
         <div className="absolute inset-0 bg-gradient-to-t from-roof-dark/95 via-roof-dark/45 to-roof-dark/10" />
-        {/* glowing window accent per lodge */}
-        <span
-          className="absolute right-4 top-4 h-5 w-5 rounded-[3px] shadow-[0_0_16px_4px] "
-          style={{ background: lodge.accent, color: lodge.accent }}
+        {/* the lodge's logo mark, hung on the log wall (top-right) */}
+        <LodgeMark
+          variant="mini"
+          slug={lodge.slug}
+          color={lodge.neonColor ?? lodge.accent}
+          className="absolute right-5 top-4 h-16 w-16"
+          style={{ rotate: "-2deg" }}
         />
         {closed && (
           <span className="eyebrow absolute left-4 top-4 rounded-full bg-pine-900/85 px-3 py-1 text-cream-50">

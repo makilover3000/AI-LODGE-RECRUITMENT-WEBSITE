@@ -44,18 +44,26 @@ export default function EntryExperience() {
 
   if (phase === "deciding") {
     // show the blurred painting (not flat green) so the hand-off into the scene
-    // is seamless — no colour flash during the one-tick client decision
+    // is seamless — no colour flash during the one-tick client decision. The
+    // placeholder is tiny (~3 KB); the CSS blur turns its upscale into soft
+    // focus instead of JPEG blocks (scale hides the blur's edge bleed).
     return (
       <div
-        className="fixed inset-0 z-[80]"
+        className="fixed inset-0 z-[80] overflow-hidden"
         aria-hidden
-        style={{
-          backgroundColor: "#1f2b21",
-          backgroundImage: `url(${BLUR_DESKTOP})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-      />
+        style={{ backgroundColor: "#1f2b21" }}
+      >
+        <div
+          className="absolute inset-0"
+          style={{
+            backgroundImage: `url(${BLUR_DESKTOP})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            filter: "blur(10px)",
+            transform: "scale(1.06)",
+          }}
+        />
+      </div>
     );
   }
 

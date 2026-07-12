@@ -47,6 +47,9 @@ export type Lodge = {
   ambient: AmbientKind;
   /** palette accent (hex) used for per-lodge tinting */
   accent: string;
+  /** logo mark uses the REAL art at /logos/<slug>.png; this overrides the glow
+   *  colour (defaults to accent) — see components/lodge/LodgeMark.tsx */
+  neonColor?: string;
   /** per-lodge: pulsing crimson halo on the ambient particles (Vampire only) */
   ambientGlow?: boolean;
   /** application status — absent is treated as "open" (see isClosed) */
@@ -183,8 +186,8 @@ export const lodges: Lodge[] = [
     ambientGlow: true, // pulsing crimson halo on the particles
   },
   {
-    slug: "kag",
-    name: "KAG Lodge",
+    slug: "curiositymaxxer",
+    name: "CuriosityMaxxer Lodge",
     tagline: "Build with the end in mind — deployment-focused from day one.",
     level: "Intermediate",
     forWho:
@@ -445,3 +448,8 @@ export const lodges: Lodge[] = [
 ];
 
 export const getLodge = (slug: string) => lodges.find((l) => l.slug === slug);
+
+/** Old slugs that now redirect to a renamed lodge (kept so shared links don't 404). */
+export const LODGE_SLUG_ALIASES: Record<string, string> = {
+  kag: "curiositymaxxer", // KAG Lodge → CuriosityMaxxer Lodge
+};

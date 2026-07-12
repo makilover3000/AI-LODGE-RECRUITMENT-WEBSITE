@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Footer() {
   return (
@@ -15,6 +16,15 @@ export default function Footer() {
             height={86}
             className="h-6 w-auto opacity-80 invert"
           />
+          <Link
+            href="https://smubia.com/Projects?badge=AI%20Lodge"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group inline-flex items-center gap-2 text-sm font-semibold text-cream-50/80 underline-offset-4 transition-colors hover:text-glow hover:underline"
+          >
+            View past projects
+            <span aria-hidden className="transition-transform group-hover:translate-x-1">↗</span>
+          </Link>
           <p className="text-sm text-cream-50/50">
             © {new Date().getFullYear()} AI Lodge · SMU Business Intelligence &amp;
             Analytics
