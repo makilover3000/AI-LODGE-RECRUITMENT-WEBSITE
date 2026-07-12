@@ -63,10 +63,10 @@ export default function Hero() {
         {/* framed painted poster */}
         <div className="relative mx-auto w-full max-w-md lg:max-w-none">
           <div className="relative rotate-[1.4deg] rounded-[14px] border-[6px] border-cream-50 bg-cream-50 shadow-[0_22px_50px_-18px_rgba(31,43,33,0.6)]">
-            <div className="relative aspect-[4/5] overflow-hidden rounded-[8px] border border-pine-900/15">
+            <div className="relative aspect-[4/3] overflow-hidden rounded-[8px] border border-pine-900/15">
               <Image
-                src="/moments/demo-candid-group.webp"
-                alt="AI Lodge members together on demo day, showing off what they built."
+                src="/moments/jb-group-2.webp"
+                alt="A past AI Lodge group together after a session."
                 fill
                 priority
                 sizes="(max-width: 1024px) 90vw, 460px"
