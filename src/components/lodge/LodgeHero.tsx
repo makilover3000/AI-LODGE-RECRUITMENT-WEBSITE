@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { isClosed, type Lodge } from "@/data/lodges";
 import LodgeMark from "./LodgeMark";
+import GuitarNeon from "./GuitarNeon";
 
 /** Pick a legible text colour (pine-900 or cream-50) for a given accent background. */
 function readableOn(hex: string) {
@@ -77,14 +78,24 @@ export default function LodgeHero({ lodge }: { lodge: Lodge }) {
             </p>
           </div>
 
-          {/* the lodge's crisp lit emblem — the REAL logo, glowing in its accent */}
+          {/* the lodge's crisp lit emblem — the REAL logo. HackStreet gets its
+              one-off neon-guitar showpiece; every other lodge floats flat. */}
           <div className="relative shrink-0 self-center lg:mr-2 lg:self-auto">
-            <LodgeMark
-              slug={lodge.slug}
-              color={accent}
-              className="h-[clamp(180px,26vw,290px)] w-[clamp(180px,26vw,290px)]"
-              style={{ rotate: "-2deg" }}
-            />
+            {lodge.slug === "hackstreet-boys" ? (
+              <GuitarNeon
+                variant="emblem"
+                color={accent}
+                className="w-[clamp(250px,44vw,470px)] aspect-[1292/959]"
+                style={{ rotate: "-3deg" }}
+              />
+            ) : (
+              <LodgeMark
+                slug={lodge.slug}
+                color={accent}
+                className="h-[clamp(180px,26vw,290px)] w-[clamp(180px,26vw,290px)]"
+                style={{ rotate: "-2deg" }}
+              />
+            )}
           </div>
         </div>
       </div>

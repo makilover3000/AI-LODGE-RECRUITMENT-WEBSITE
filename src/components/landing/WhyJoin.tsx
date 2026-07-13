@@ -64,18 +64,6 @@ export default function WhyJoin() {
             </article>
           ))}
         </ScrollReveal>
-
-        <ScrollReveal className="mt-10">
-          <a
-            href="https://smubia.com/Projects?badge=AI%20Lodge"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group inline-flex items-center gap-2 font-semibold text-teal-deep underline-offset-4 hover:underline"
-          >
-            See our lodgers&apos; past projects on the SMU BIA site
-            <span className="transition-transform group-hover:translate-x-1">↗</span>
-          </a>
-        </ScrollReveal>
       </div>
     </section>
   );

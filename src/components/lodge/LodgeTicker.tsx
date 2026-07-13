@@ -1,6 +1,7 @@
 import type { CSSProperties } from "react";
 import type { Lodge } from "@/data/lodges";
 import Treeline from "@/components/ui/Treeline";
+import GuitarNeon from "@/components/lodge/GuitarNeon";
 
 /**
  * A fast ribbon of the lodge's OWN logo, repeated tiny and streaming past — a
@@ -13,20 +14,32 @@ const PER_HALF = 16; // tiles per half; the track is duplicated for a seamless l
 
 export default function LodgeTicker({ lodge }: { lodge: Lodge }) {
   const accent = lodge.neonColor ?? lodge.accent;
+  const isGuitar = lodge.slug === "hackstreet-boys";
   const vars = {
     "--mk": `url(/logos/${lodge.slug}.png)`,
     "--c": accent,
-    "--belt-dur": "16s",
+    "--belt-dur": isGuitar ? "24s" : "16s",
   } as CSSProperties;
 
   const half = (prefix: string) =>
-    Array.from({ length: PER_HALF }).map((_, i) => (
-      <span
-        key={`${prefix}-${i}`}
-        className="ail-mask ail-ticker-mark mx-3.5 h-7 w-9 shrink-0 sm:mx-4 sm:h-8 sm:w-11"
-        style={{ animationDelay: `${(i % 5) * 0.45}s` }}
-      />
-    ));
+    Array.from({ length: PER_HALF }).map((_, i) =>
+      isGuitar ? (
+        // HackStreet: tiny glowing neon guitars streaming past
+        <GuitarNeon
+          key={`${prefix}-${i}`}
+          variant="ticker"
+          color={accent}
+          className="mx-3 w-14 shrink-0 aspect-[1292/959]"
+          style={{ animationDelay: `${(i % 5) * 0.45}s` }}
+        />
+      ) : (
+        <span
+          key={`${prefix}-${i}`}
+          className="ail-mask ail-ticker-mark mx-3.5 h-7 w-9 shrink-0 sm:mx-4 sm:h-8 sm:w-11"
+          style={{ animationDelay: `${(i % 5) * 0.45}s` }}
+        />
+      )
+    );
 
   return (
     <div className="relative bg-pine-900">

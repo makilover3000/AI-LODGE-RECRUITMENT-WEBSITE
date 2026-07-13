@@ -62,6 +62,8 @@ next-env.d.ts
 /HacKStreet Boys PICS/
 /kag lodge pics/
 /wss lodge pics/
+/cjb lodge pic/
+/vercel pic/
 # heavy AI-gen source originals — commit the optimized .jpg only
 public/entry/*.png
 # lodge logo source art — commit only the baked masks in public/logos/

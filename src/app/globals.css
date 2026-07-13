@@ -271,10 +271,10 @@ body {
   );
 }
 
-/* EMBLEM — the big hero statement. A pulsing accent halo (glow) under a crisp
-   lit core. Following the neon lesson: the drop-shadow filter is STATIC and only
-   the halo's OPACITY animates, so weak phones composite the pulse cheaply. The
-   filter sits on the wrapper (not the masked child) so the glow isn't clipped. */
+/* EMBLEM — the big hero statement: a crisp lit core, gently floating. The glow
+   halo was removed (it read as overpowering neon bloom); the underlying accent
+   halo layer stays but carries no filter, so it just sits (hidden) behind the
+   core. Only the float bob remains. */
 .ail-emblem {
   position: relative;
   display: block;
@@ -285,23 +285,9 @@ body {
   position: absolute;
   inset: 0;
 }
-.ail-emblem-halo {
-  filter: drop-shadow(0 0 8px var(--c)) drop-shadow(0 0 22px var(--c))
-    drop-shadow(0 0 48px var(--c));
-  animation: ail-emblem-breathe 3.6s ease-in-out infinite;
-}
 .ail-emblem .ail-mask {
   position: absolute;
   inset: 0;
-}
-@keyframes ail-emblem-breathe {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.62;
-  }
 }
 
 /* MINI — the card chip: crisp core + small static glow (filter on the wrapper).
@@ -311,7 +297,6 @@ body {
    resolves against it because `absolute` is itself a positioned context. */
 .ail-mark-mini {
   display: block;
-  filter: drop-shadow(0 0 4px var(--c)) drop-shadow(0 0 11px var(--c));
 }
 .ail-mark-mini .ail-mask {
   position: absolute;
@@ -320,6 +305,121 @@ body {
 /* re-ignite flicker when the parent card (`.group`) is hovered */
 .group:hover .ail-mark-mini .ail-mask {
   animation: ail-neon-on 1.1s steps(1, end) both;
+}
+
+/* ============================================================
+   Neon guitar — HackStreet Boys' one-off showpiece (components/lodge/GuitarNeon.tsx).
+   A traced Stratocaster rendered as glowing glass tubes; scoped entirely here so it
+   never touches the other lodges' flat marks (whose glow was intentionally removed).
+   `--c` = accent. Stroke widths are non-scaling (screen px, consistent at any render
+   size), set per variant; glow radii per variant. Only OPACITY animates — the
+   drop-shadow filter is STATIC (cheap on phones, no per-frame re-raster).
+   ============================================================ */
+/* No `position` here on purpose: the caller positions the mark (the card uses
+   `absolute right-4`), and an unlayered `position` would beat Tailwind's @layer
+   utilities and break it — the same trap `.ail-mark-mini` avoids. */
+.ail-guitar {
+  display: block;
+}
+.ail-guitar-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible; /* let the glow bleed past the viewBox instead of clipping */
+}
+.ail-guitar path {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+.ail-guitar-halo,
+.ail-guitar-tube {
+  stroke: var(--c);
+}
+.ail-guitar-unlit {
+  stroke: color-mix(in srgb, var(--c) 26%, #04100e);
+}
+.ail-guitar-core {
+  stroke: #fff8ec;
+}
+@keyframes ail-guitar-breathe {
+  0%,
+  100% {
+    opacity: 0.92;
+  }
+  50% {
+    opacity: 0.48;
+  }
+}
+
+/* EMBLEM — the hero showpiece: floats, ignites (flicker) on load, then breathes. */
+.ail-guitar-emblem {
+  animation: ail-float 7s ease-in-out infinite;
+}
+.ail-guitar-emblem .ail-guitar-halo {
+  stroke-width: 3.5;
+  opacity: 0.85;
+  /* tighter bloom so tubes stay crisp and neighbouring lines don't wash together */
+  filter: drop-shadow(0 0 2px var(--c)) drop-shadow(0 0 6px var(--c))
+    drop-shadow(0 0 14px var(--c));
+  animation: ail-guitar-breathe 3.8s ease-in-out 1.25s infinite;
+}
+.ail-guitar-emblem .ail-guitar-unlit {
+  stroke-width: 5;
+  opacity: 0.35;
+}
+.ail-guitar-emblem .ail-guitar-tube {
+  stroke-width: 3;
+}
+.ail-guitar-emblem .ail-guitar-core {
+  stroke-width: 2.1;
+  opacity: 1;
+}
+/* the whole lit run flickers up once on load (steps = hard neon-tube ignition) */
+.ail-guitar-emblem .ail-guitar-lit {
+  animation: ail-neon-on 1.25s steps(1, end) both;
+}
+
+/* MINI — the card chip: crisp, gentle static glow, re-ignites on card hover. */
+.ail-guitar-mini .ail-guitar-halo {
+  stroke-width: 3;
+  opacity: 0.8;
+  filter: drop-shadow(0 0 3px var(--c)) drop-shadow(0 0 8px var(--c));
+}
+.ail-guitar-mini .ail-guitar-unlit {
+  stroke-width: 4.5;
+  opacity: 0.45;
+}
+.ail-guitar-mini .ail-guitar-tube {
+  stroke-width: 2.3;
+}
+.ail-guitar-mini .ail-guitar-core {
+  stroke-width: 0.9;
+  opacity: 0.95;
+}
+.group:hover .ail-guitar-mini .ail-guitar-lit {
+  animation: ail-neon-on 1.1s steps(1, end) both;
+}
+
+/* TICKER — the tiny streaming mark: simplified outline + gentle glow + shimmer. */
+.ail-guitar-ticker {
+  animation: ail-shimmer 2.6s ease-in-out infinite;
+}
+.ail-guitar-ticker .ail-guitar-halo {
+  stroke-width: 2.4;
+  opacity: 0.75;
+  filter: drop-shadow(0 0 2px var(--c)) drop-shadow(0 0 5px var(--c));
+}
+.ail-guitar-ticker .ail-guitar-unlit {
+  display: none;
+}
+.ail-guitar-ticker .ail-guitar-tube {
+  stroke-width: 1.6;
+}
+.ail-guitar-ticker .ail-guitar-core {
+  stroke-width: 0.6;
+  opacity: 0.9;
 }
 
 /* ============================================================
