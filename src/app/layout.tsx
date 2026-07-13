@@ -25,7 +25,7 @@ const pacifico = Pacifico({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://ailodge.smubia.org"),
+  metadataBase: new URL("https://ailodge.smubia.com"),
   title: {
     default: "AI Lodge — SMU BIA",
     template: "%s · AI Lodge",
