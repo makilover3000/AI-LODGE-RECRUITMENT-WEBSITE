@@ -70,6 +70,10 @@ public/entry/*.png
 /logos/
 # past-moment source photos — commit only the optimized public/moments/*.webp
 /ai-lodge-past-images/
+# phone QA screenshots dropped in the repo root — local only
+/screenshots of mobile/
+# Nano Banana generation review set — reference only, never served
+/asset-review/
 # markdown notes — keep local only, do not track (README.md stays tracked)
 *.md
 !README.md

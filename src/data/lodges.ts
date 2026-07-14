@@ -99,7 +99,7 @@ export const lodges: Lodge[] = [
       },
       {
         name: "June",
-        detail: "SCIS (CS) / Year 2",
+        detail: "SCIS (SE) / Year 2",
         telegram: "e1jun6",
         image: "/captains/june.jpg",
       },
@@ -182,7 +182,8 @@ export const lodges: Lodge[] = [
       },
     ],
     ambient: "bat",
-    accent: "#8B1A1A", // blood red — Vampire Lodge
+    accent: "#8B1A1A", // blood red — Vampire Lodge (level badge / ambient stay deep)
+    neonColor: "#FF1810", // bright vampire red — neon bat + hero tagline glow
     ambientGlow: true, // pulsing crimson halo on the particles
   },
   {

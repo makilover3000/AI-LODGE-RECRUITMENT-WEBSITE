@@ -2,6 +2,53 @@ import Link from "next/link";
 import { isClosed, type Lodge } from "@/data/lodges";
 import LodgeMark from "@/components/lodge/LodgeMark";
 import GuitarNeon from "@/components/lodge/GuitarNeon";
+import ShipNeon from "@/components/lodge/ShipNeon";
+import BatNeon from "@/components/lodge/BatNeon";
+
+/** The mark hung on the card's log wall. Three lodges get a one-off neon showpiece
+ *  (their own sizing); every other lodge floats its flat logo mark. */
+function CardMark({ lodge }: { lodge: Lodge }) {
+  const color = lodge.neonColor ?? lodge.accent;
+  if (lodge.slug === "hackstreet-boys") {
+    return (
+      <GuitarNeon
+        variant="mini"
+        color={color}
+        className="absolute right-4 top-4 w-[104px] aspect-[1292/959]"
+        style={{ rotate: "-3deg" }}
+      />
+    );
+  }
+  if (lodge.slug === "vampire") {
+    return (
+      <BatNeon
+        variant="mini"
+        color={color}
+        className="absolute right-4 top-4 w-[104px] aspect-[1080/559]"
+        style={{ rotate: "-2deg" }}
+      />
+    );
+  }
+  if (lodge.slug === "curiositymaxxer") {
+    return (
+      <ShipNeon
+        variant="mini"
+        color={color}
+        className="absolute right-4 top-3 w-[76px] aspect-[1317/1085]"
+        style={{ rotate: "-3deg" }}
+      />
+    );
+  }
+  return (
+    <LodgeMark
+      variant="mini"
+      slug={lodge.slug}
+      color={color}
+      className="absolute right-5 top-4 h-16 w-16"
+      style={{ rotate: "-2deg" }}
+    />
+  );
+}
 
 const LEVEL_STYLES: Record<Lodge["level"], string> = {
   Beginner: "bg-mist-deep text-pine-900",
@@ -29,23 +76,9 @@ export default function LodgeCard({ lodge }: { lodge: Lodge }) {
       >
         <div className="absolute inset-0 bg-gradient-to-t from-roof-dark/95 via-roof-dark/45 to-roof-dark/10" />
         {/* the lodge's logo mark, hung on the log wall (top-right). HackStreet's
-            neon guitar is wider, so it gets its own sizing. */}
-        {lodge.slug === "hackstreet-boys" ? (
-          <GuitarNeon
-            variant="mini"
-            color={lodge.neonColor ?? lodge.accent}
-            className="absolute right-4 top-4 w-[104px] aspect-[1292/959]"
-            style={{ rotate: "-3deg" }}
-          />
-        ) : (
-          <LodgeMark
-            variant="mini"
-            slug={lodge.slug}
-            color={lodge.neonColor ?? lodge.accent}
-            className="absolute right-5 top-4 h-16 w-16"
-            style={{ rotate: "-2deg" }}
-          />
-        )}
+            neon guitar and CuriosityMaxxer's neon ship are wider one-offs with
+            their own sizing; see CardMark. */}
+        <CardMark lodge={lodge} />
         {closed && (
           <span className="eyebrow absolute left-4 top-4 rounded-full bg-pine-900/85 px-3 py-1 text-cream-50">
             Closed

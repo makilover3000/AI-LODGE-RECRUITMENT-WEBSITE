@@ -423,6 +423,235 @@ body {
 }
 
 /* ============================================================
+   Neon ship — CuriosityMaxxer's one-off showpiece (components/lodge/ShipNeon.tsx).
+   A traced medieval tall ship rendered as glowing glass tubes; scoped entirely here
+   so it never touches the other lodges' flat marks. Sibling of the guitar block above.
+   `--c` = accent. Stroke widths are non-scaling (screen px, consistent at any render
+   size); the ship's interior detail is denser than the guitar, so widths/glow radii
+   are a touch tighter to keep neighbouring tubes from washing together. Only OPACITY
+   animates — the drop-shadow filter is STATIC (cheap on phones, no per-frame re-raster).
+   ============================================================ */
+/* No `position` here on purpose (see the guitar/mini note above): the caller
+   positions the mark, and an unlayered `position` would beat Tailwind's utilities. */
+.ail-ship {
+  display: block;
+}
+.ail-ship-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible; /* let the glow bleed past the viewBox instead of clipping */
+}
+.ail-ship path {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+.ail-ship-halo,
+.ail-ship-tube {
+  stroke: var(--c);
+}
+.ail-ship-unlit {
+  stroke: color-mix(in srgb, var(--c) 26%, #04100e);
+}
+.ail-ship-core {
+  stroke: #fff8ec;
+}
+@keyframes ail-ship-breathe {
+  0%,
+  100% {
+    opacity: 0.92;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* EMBLEM — the hero showpiece: floats, ignites (flicker) on load, then breathes. */
+.ail-ship-emblem {
+  animation: ail-float 7s ease-in-out infinite;
+}
+.ail-ship-emblem .ail-ship-halo {
+  stroke-width: 3;
+  opacity: 0.82;
+  /* tighter bloom so the dense rigging/plank tubes stay crisp and readable */
+  filter: drop-shadow(0 0 1.5px var(--c)) drop-shadow(0 0 5px var(--c))
+    drop-shadow(0 0 12px var(--c));
+  animation: ail-ship-breathe 3.8s ease-in-out 1.25s infinite;
+}
+.ail-ship-emblem .ail-ship-unlit {
+  stroke-width: 4;
+  opacity: 0.32;
+}
+.ail-ship-emblem .ail-ship-tube {
+  stroke-width: 2.4;
+}
+.ail-ship-emblem .ail-ship-core {
+  stroke-width: 1.5;
+  opacity: 1;
+}
+/* the whole lit run flickers up once on load (steps = hard neon-tube ignition) */
+.ail-ship-emblem .ail-ship-lit {
+  animation: ail-neon-on 1.25s steps(1, end) both;
+}
+
+/* MINI — the card chip: crisp, gentle static glow, re-ignites on card hover. */
+.ail-ship-mini .ail-ship-halo {
+  stroke-width: 2.6;
+  opacity: 0.78;
+  filter: drop-shadow(0 0 2px var(--c)) drop-shadow(0 0 6px var(--c));
+}
+.ail-ship-mini .ail-ship-unlit {
+  stroke-width: 3.6;
+  opacity: 0.42;
+}
+.ail-ship-mini .ail-ship-tube {
+  stroke-width: 1.9;
+}
+.ail-ship-mini .ail-ship-core {
+  stroke-width: 0.75;
+  opacity: 0.95;
+}
+.group:hover .ail-ship-mini .ail-ship-lit {
+  animation: ail-neon-on 1.1s steps(1, end) both;
+}
+
+/* TICKER — the tiny streaming mark: simplified outline + gentle glow + shimmer. */
+.ail-ship-ticker {
+  animation: ail-shimmer 2.6s ease-in-out infinite;
+}
+.ail-ship-ticker .ail-ship-halo {
+  stroke-width: 2.2;
+  opacity: 0.75;
+  filter: drop-shadow(0 0 2px var(--c)) drop-shadow(0 0 5px var(--c));
+}
+.ail-ship-ticker .ail-ship-unlit {
+  display: none;
+}
+.ail-ship-ticker .ail-ship-tube {
+  stroke-width: 1.5;
+}
+.ail-ship-ticker .ail-ship-core {
+  stroke-width: 0.55;
+  opacity: 0.9;
+}
+
+/* ============================================================
+   Neon bat — Vampire Lodge's one-off showpiece (components/lodge/BatNeon.tsx).
+   A traced gothic ornate bat (wide wings + tribal filigree) rendered as glowing glass
+   tubes; scoped entirely here so it never touches the other lodges' flat marks. Sibling
+   of the guitar/ship blocks. `--c` = bright vampire red (neonColor #FF1810). The filigree
+   is finer/denser than the ship's rigging, so widths/glow radii are a touch tighter to keep
+   neighbouring tubes crisp. Only OPACITY animates — the drop-shadow filter is STATIC.
+   ============================================================ */
+/* No `position` here on purpose (see the guitar/ship/mini notes): the caller positions
+   the mark, and an unlayered `position` would beat Tailwind's utilities. */
+.ail-bat {
+  display: block;
+}
+.ail-bat-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible; /* let the glow bleed past the viewBox instead of clipping */
+}
+.ail-bat path {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+.ail-bat-halo,
+.ail-bat-tube {
+  stroke: var(--c);
+}
+.ail-bat-unlit {
+  stroke: color-mix(in srgb, var(--c) 24%, #0c0203);
+}
+.ail-bat-core {
+  stroke: #fff8ec;
+}
+@keyframes ail-bat-breathe {
+  0%,
+  100% {
+    opacity: 0.92;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* EMBLEM — the hero showpiece: floats, ignites (flicker) on load, then breathes. */
+.ail-bat-emblem {
+  animation: ail-float 7s ease-in-out infinite;
+}
+.ail-bat-emblem .ail-bat-halo {
+  stroke-width: 2.8;
+  opacity: 0.82;
+  /* tighter bloom so the dense filigree tubes stay crisp and don't wash together */
+  filter: drop-shadow(0 0 1.5px var(--c)) drop-shadow(0 0 5px var(--c))
+    drop-shadow(0 0 12px var(--c));
+  animation: ail-bat-breathe 3.8s ease-in-out 1.25s infinite;
+}
+.ail-bat-emblem .ail-bat-unlit {
+  stroke-width: 3.8;
+  opacity: 0.3;
+}
+.ail-bat-emblem .ail-bat-tube {
+  stroke-width: 2.3;
+}
+.ail-bat-emblem .ail-bat-core {
+  stroke-width: 1.4;
+  opacity: 1;
+}
+/* the whole lit run flickers up once on load (steps = hard neon-tube ignition) */
+.ail-bat-emblem .ail-bat-lit {
+  animation: ail-neon-on 1.25s steps(1, end) both;
+}
+
+/* MINI — the card chip: crisp, gentle static glow, re-ignites on card hover. */
+.ail-bat-mini .ail-bat-halo {
+  stroke-width: 2.4;
+  opacity: 0.78;
+  filter: drop-shadow(0 0 2px var(--c)) drop-shadow(0 0 6px var(--c));
+}
+.ail-bat-mini .ail-bat-unlit {
+  stroke-width: 3.2;
+  opacity: 0.42;
+}
+.ail-bat-mini .ail-bat-tube {
+  stroke-width: 1.8;
+}
+.ail-bat-mini .ail-bat-core {
+  stroke-width: 0.7;
+  opacity: 0.95;
+}
+.group:hover .ail-bat-mini .ail-bat-lit {
+  animation: ail-neon-on 1.1s steps(1, end) both;
+}
+
+/* TICKER — the tiny streaming mark: simplified outline + gentle glow + shimmer. */
+.ail-bat-ticker {
+  animation: ail-shimmer 2.6s ease-in-out infinite;
+}
+.ail-bat-ticker .ail-bat-halo {
+  stroke-width: 2;
+  opacity: 0.75;
+  filter: drop-shadow(0 0 2px var(--c)) drop-shadow(0 0 5px var(--c));
+}
+.ail-bat-ticker .ail-bat-unlit {
+  display: none;
+}
+.ail-bat-ticker .ail-bat-tube {
+  stroke-width: 1.4;
+}
+.ail-bat-ticker .ail-bat-core {
+  stroke-width: 0.5;
+  opacity: 0.9;
+}
+
+/* ============================================================
    Belts — one seamless track duplicated 2x, translated -50% (transform only).
    Used by the landing "FROM THE LODGE" photo belt and the per-lodge logo ticker.
    ============================================================ */

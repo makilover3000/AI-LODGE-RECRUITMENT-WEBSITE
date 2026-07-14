@@ -3,6 +3,8 @@ import Link from "next/link";
 import { isClosed, type Lodge } from "@/data/lodges";
 import LodgeMark from "./LodgeMark";
 import GuitarNeon from "./GuitarNeon";
+import ShipNeon from "./ShipNeon";
+import BatNeon from "./BatNeon";
 
 /** Pick a legible text colour (pine-900 or cream-50) for a given accent background. */
 function readableOn(hex: string) {
@@ -68,7 +70,9 @@ export default function LodgeHero({ lodge }: { lodge: Lodge }) {
         </div>
 
         <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between lg:gap-14">
-          <div className="min-w-0">
+          {/* title sits above the emblem (z-10) so a long name like
+              "CURIOSITYMAXXER" reads in front of the neon sign, never behind it */}
+          <div className="relative z-10 min-w-0">
             <h1 className="font-display mt-4 text-display text-cream-50">{lodge.name}</h1>
             <p
               className="font-script mt-1 text-3xl sm:text-4xl"
@@ -79,13 +83,32 @@ export default function LodgeHero({ lodge }: { lodge: Lodge }) {
           </div>
 
           {/* the lodge's crisp lit emblem — the REAL logo. HackStreet gets its
-              one-off neon-guitar showpiece; every other lodge floats flat. */}
+              one-off neon-guitar showpiece, CuriosityMaxxer its neon ship, and
+              Vampire its neon bat; every other lodge floats flat. */}
           <div className="relative shrink-0 self-center lg:mr-2 lg:self-auto">
             {lodge.slug === "hackstreet-boys" ? (
               <GuitarNeon
                 variant="emblem"
                 color={accent}
                 className="w-[clamp(250px,44vw,470px)] aspect-[1292/959]"
+                style={{ rotate: "-3deg" }}
+              />
+            ) : lodge.slug === "vampire" ? (
+              <BatNeon
+                variant="emblem"
+                color={accent}
+                /* wide mark (~1.9:1) sized by WIDTH in vw so it scales down on small
+                   phones and never overflows the content column (checked at 320px) */
+                className="w-[clamp(200px,74vw,440px)] aspect-[1080/559]"
+                style={{ rotate: "-2deg" }}
+              />
+            ) : lodge.slug === "curiositymaxxer" ? (
+              <ShipNeon
+                variant="emblem"
+                color={accent}
+                /* sized by HEIGHT to the ~250-300px desktop band; the ship art is
+                   wider than the guitar, so height (not width) governs its footprint */
+                className="h-[clamp(190px,24vw,296px)] aspect-[1317/1085]"
                 style={{ rotate: "-3deg" }}
               />
             ) : (

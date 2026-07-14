@@ -49,8 +49,10 @@ export default function WeekList({ lodge }: { lodge: Lodge }) {
                 key={w.label}
                 className="flex flex-wrap items-center gap-x-5 gap-y-1 rounded-xl bg-cream-50 px-5 py-4 sm:gap-x-7"
               >
+                {/* full-width on mobile so the label sits on its own line ABOVE the
+                    topic (single column); reverts to an inline w-24 column at sm+ */}
                 <span
-                  className="font-display w-24 shrink-0 text-lg"
+                  className="font-display w-full shrink-0 text-lg sm:w-24"
                   style={{ color: lodge.accent === "#FFCF87" ? "#9a6b1f" : lodge.accent }}
                 >
                   {w.label}
