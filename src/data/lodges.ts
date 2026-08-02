@@ -206,10 +206,10 @@ export const lodges: Lodge[] = [
     cardTags: ["Agentic Systems", "MCP", "Deployment-focused"],
     captains: [
       {
-        name: "Att",
+        name: "Yash",
         detail: "SCIS (CS) / Year 2",
-        telegram: "mdcccxxi",
-        image: "/captains/att.jpg",
+        telegram: "Yash_annem",
+        image: "/captains/yash.jpg",
       },
       {
         name: "Kiara",
