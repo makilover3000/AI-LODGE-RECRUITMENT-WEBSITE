@@ -8,7 +8,8 @@ export type CampIconName =
   | "signpost"
   | "logs"
   | "axe"
-  | "tools";
+  | "tools"
+  | "flag";
 
 export default function CampIcon({
   name,
@@ -78,6 +79,12 @@ const ICONS: Record<CampIconName, React.ReactNode> = {
     <g {...s}>
       <path d="M14 40 34 12" />
       <path d="M30 8c5 1 9 5 8 11-5 1-9-1-12-4l4-7Z" fill="currentColor" fillOpacity="0.14" />
+    </g>
+  ),
+  flag: (
+    <g {...s}>
+      <path d="M14 42V7" />
+      <path d="M14 9h20l-4 7 4 7H14z" fill="currentColor" fillOpacity="0.14" />
     </g>
   ),
   tools: (

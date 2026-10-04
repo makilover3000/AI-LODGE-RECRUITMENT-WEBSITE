@@ -1,7 +1,8 @@
 import type { CSSProperties } from "react";
 
 /**
- * Renders a lodge's REAL logo (public/logos/<slug>.png) painted in its accent
+ * Renders a lodge's REAL logo (`logoSrc(lodge)` — public/logos/<slug>.png, or a
+ * placeholder emblem SVG for lodges without one yet) painted in its accent
  * colour via CSS `mask-image`. Because the mask is the actual art, the shape is
  * pixel-accurate — this is the fix for the old hand-traced "neon" signs that
  * "looked nothing like the logos". Server component, zero JS.
@@ -15,20 +16,21 @@ import type { CSSProperties } from "react";
 type Variant = "emblem" | "watermark" | "mini";
 
 export default function LodgeMark({
-  slug,
+  src,
   color,
   variant = "emblem",
   className = "",
   style,
 }: {
-  slug: string;
+  /** image whose alpha becomes the mark — pass `logoSrc(lodge)` */
+  src: string;
   color: string;
   variant?: Variant;
   className?: string;
   style?: CSSProperties;
 }) {
   const vars = {
-    "--mk": `url(/logos/${slug}.png)`,
+    "--mk": `url(${src})`,
     "--c": color,
     ...style,
   } as CSSProperties;

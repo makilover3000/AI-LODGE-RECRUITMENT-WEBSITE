@@ -1,5 +1,6 @@
 import Image from "next/image";
 import type { Captain } from "@/data/lodges";
+import CampIcon from "@/components/ui/CampIcon";
 
 export default function CaptainCard({
   captain,
@@ -16,13 +17,18 @@ export default function CaptainCard({
         style={{ backgroundColor: accent }}
         aria-hidden
       >
-        <Image
-          src={captain.image}
-          alt={`${captain.name} profile photo`}
-          width={160}
-          height={160}
-          className="h-full w-full object-cover object-top"
-        />
+        {captain.image ? (
+          <Image
+            src={captain.image}
+            alt={`${captain.name} profile photo`}
+            width={160}
+            height={160}
+            className="h-full w-full object-cover object-top"
+          />
+        ) : (
+          // captain not announced yet: a pine silhouette instead of a broken image
+          <CampIcon name="pine" className="h-20 w-20 text-cream-50/85" />
+        )}
       </div>
       <h3 className="font-display mt-5 text-2xl text-pine-900">
         {captain.name}
@@ -38,7 +44,7 @@ export default function CaptainCard({
           @{captain.telegram}
         </a>
       ) : (
-        <span className="mt-4 text-base text-charcoal/45">Telegram — TBC</span>
+        <span className="mt-4 text-base text-charcoal/70">Telegram — TBC</span>
       )}
     </div>
   );

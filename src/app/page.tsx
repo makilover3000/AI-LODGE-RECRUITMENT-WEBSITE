@@ -8,6 +8,7 @@ import WhyJoin from "@/components/landing/WhyJoin";
 import MomentsBelt from "@/components/landing/MomentsBelt";
 import ApplicationsBanner from "@/components/landing/ApplicationsBanner";
 import ApplicationProcess from "@/components/landing/ApplicationProcess";
+import LodgeGrid from "@/components/landing/LodgeGrid";
 import ApplyCTA from "@/components/landing/ApplyCTA";
 
 export default function Home() {
@@ -39,6 +40,7 @@ export default function Home() {
           <InfoStrip />
           <WhyJoin />
           <MomentsBelt />
+          <LodgeGrid />
           <ProgrammeTimeline />
           <ApplicationsBanner />
           <ApplicationProcess />

@@ -1,4 +1,5 @@
 import type { Lodge } from "@/data/lodges";
+import { LODGE_REVEAL } from "@/data/programme";
 import CaptainCard from "./CaptainCard";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 
@@ -9,7 +10,7 @@ export default function WeekList({ lodge }: { lodge: Lodge }) {
   const countWord = COUNT_WORDS[captainCount] ?? String(captainCount);
   return (
     <section className="bg-cream-100 py-20">
-      <div className="mx-auto max-w-5xl px-5 sm:px-8">
+      <div className="mx-auto max-w-6xl px-5 sm:px-8">
         {/* captains */}
         <p className="eyebrow text-teal-ink">Your captains</p>
         <h2 className="font-display mt-3 text-h2 text-pine-900">
@@ -27,9 +28,11 @@ export default function WeekList({ lodge }: { lodge: Lodge }) {
             <CaptainCard key={i} captain={c} accent={lodge.accent} />
           ))}
         </ScrollReveal>
-        <p className="mt-4 text-sm text-charcoal/60">
-          Captain details are being finalised and will be updated here.
-        </p>
+        {lodge.placeholder && (
+          <p className="mt-4 text-sm text-charcoal/80">
+            Captains are being finalised — they&apos;ll be revealed here {LODGE_REVEAL}.
+          </p>
+        )}
 
         {/* weekly trail */}
         <div className="mt-16">
@@ -77,7 +80,7 @@ export default function WeekList({ lodge }: { lodge: Lodge }) {
               </div>
             ))}
           </ScrollReveal>
-          <p className="mt-4 text-sm text-charcoal/60">
+          <p className="mt-4 text-sm text-charcoal/80">
             Weekly topics are indicative and may shift to fit the lodge.
           </p>
         </div>

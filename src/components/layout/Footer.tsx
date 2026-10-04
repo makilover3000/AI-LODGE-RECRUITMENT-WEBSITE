@@ -14,7 +14,7 @@ export default function Footer() {
             alt="SMU BIA"
             width={284}
             height={86}
-            className="h-6 w-auto opacity-80 invert"
+            className="h-6 w-auto opacity-80"
           />
           <Link
             href="https://smubia.com/Projects?badge=AI%20Lodge"

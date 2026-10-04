@@ -1,7 +1,13 @@
 /**
- * Lodge data. Copy here is PLACEHOLDER (names, captains, weekly topics) — structured so real
- * data swaps in without touching layout. Programme/application copy lives in the components.
+ * Lodge data, split into two cohorts:
+ *   - "current" — the lodges recruiting now. Until their details drop (LODGE_REVEAL) they are
+ *     forest-named placeholders built by `placeholderLodge()`; swap real data into the same
+ *     objects (and drop `placeholder: true`) without touching layout.
+ *   - "past"    — lodges from earlier cohorts, shown on /lodges/past at their original URLs.
+ * Programme/application copy lives in the components and data/programme.ts.
  */
+
+import { LODGE_REVEAL } from "./programme";
 
 export type Captain = {
   name: string;
@@ -32,9 +38,18 @@ export type AmbientKind =
 
 export type Lodge = {
   slug: string;
+  /** which intake this lodge belongs to — see the file header */
+  cohort: "current" | "past";
+  /** the lodge's real logo art (masked + tinted by LodgeMark); absent → placeholder emblem */
+  logo?: string;
+  /** placeholder emblem used when there is no logo yet (see public/logos/placeholders/) */
+  emblem?: PlaceholderEmblem;
+  /** details not released yet — cards and pages show the "details drop" treatment */
+  placeholder?: boolean;
   name: string;
   tagline: string;
-  level: "Beginner" | "Beginner–Intermediate" | "Intermediate";
+  /** "TBA" = placeholder lodge whose level is not announced yet */
+  level: "Beginner" | "Beginner–Intermediate" | "Intermediate" | "TBA";
   forWho: string;
   /** short "who it's for" shown on the lodge card; falls back to forWho */
   forWhoCard?: string;
@@ -60,8 +75,17 @@ export type Lodge = {
   sessionLength?: string;
 };
 
+export type PlaceholderEmblem = "pine" | "campfire" | "compass" | "lantern" | "axe";
+
 /** A lodge not accepting applications this cycle (still shown for transparency). */
 export const isClosed = (l: Lodge) => l.status === "closed";
+
+/** A lodge from an earlier cohort (shown on /lodges/past). */
+export const isPast = (l: Lodge) => l.cohort === "past";
+
+/** The art LodgeMark / LodgeTicker paint: the real logo, else the placeholder emblem. */
+export const logoSrc = (l: Lodge) =>
+  l.logo ?? `/logos/placeholders/${l.emblem ?? "campfire"}.svg`;
 
 /** builds the standard 8-week trail + Recess hack day + Week 10 finals */
 const weeks = (topics: string[]): Week[] => [
@@ -70,9 +94,76 @@ const weeks = (topics: string[]): Week[] => [
   { label: "Week 10", topic: "Hackathon finals & project exhibition" },
 ];
 
-export const lodges: Lodge[] = [
+/**
+ * A default lodge for the new cohort, shown until its real details drop. `accent` is the dark
+ * tone (legible as text on cream); `glow` is its light partner (legible on the pine hero/cards).
+ */
+const placeholderLodge = ({
+  slug,
+  name,
+  accent,
+  glow,
+  ambient,
+  emblem,
+}: {
+  slug: string;
+  name: string;
+  accent: string;
+  glow: string;
+  ambient: AmbientKind;
+  emblem: PlaceholderEmblem;
+}): Lodge => ({
+  slug,
+  name,
+  cohort: "current",
+  placeholder: true,
+  emblem,
+  tagline: `Details drop ${LODGE_REVEAL}.`,
+  level: "TBA",
+  forWho: `${name}'s focus, captains and weekly trail are being finalised. Full details drop ${LODGE_REVEAL} — check back then to see if it's the lodge for you.`,
+  forWhoCard: `Focus, captains and weekly trail drop ${LODGE_REVEAL}.`,
+  why: "Every lodge runs on the same backbone: weekly hands-on sessions in a small group of 8–10 lodgers with 3 lodge captains, a lodge hack day, and the Week 10 hackathon finals.",
+  topics: [
+    "Weekly hands-on sessions",
+    "Lodge hack day",
+    "Hackathon finals & project exhibition",
+  ],
+  captains: Array.from({ length: 3 }, () => ({
+    name: "Captain TBA",
+    detail: `Revealed ${LODGE_REVEAL}`,
+    telegram: "tbc",
+    image: "",
+  })),
+  weeks: [
+    ...Array.from({ length: 7 }, (_, i) => ({ label: `Week ${i + 1}`, topic: "To be announced" })),
+    { label: "Recess", topic: "Lodge hack day" },
+    { label: "Week 10", topic: "Hackathon finals & project exhibition" },
+  ],
+  ambient,
+  accent,
+  neonColor: glow,
+});
+
+/** The new cohort's lodges — placeholders until LODGE_REVEAL. */
+const CURRENT_LODGES: Lodge[] = [
+  placeholderLodge({ slug: "hemlock", name: "Hemlock Lodge", accent: "#3E6B48", glow: "#8FD19E", ambient: "pointed", emblem: "pine" }),
+  placeholderLodge({ slug: "cedar", name: "Cedar Lodge", accent: "#A35A42", glow: "#F0A07E", ambient: "maple", emblem: "campfire" }),
+  placeholderLodge({ slug: "birch", name: "Birch Lodge", accent: "#6E7A3C", glow: "#D2DC8A", ambient: "oval", emblem: "lantern" }),
+  placeholderLodge({ slug: "juniper", name: "Juniper Lodge", accent: "#3A6E8F", glow: "#8CC8EC", ambient: "teardrop", emblem: "compass" }),
+  placeholderLodge({ slug: "spruce", name: "Spruce Lodge", accent: "#0D6F62", glow: "#5EBAAB", ambient: "lance", emblem: "pine" }),
+  placeholderLodge({ slug: "willow", name: "Willow Lodge", accent: "#8A5C36", glow: "#E2B07E", ambient: "round", emblem: "axe" }),
+  placeholderLodge({ slug: "aspen", name: "Aspen Lodge", accent: "#9A6B1F", glow: "#FFCF87", ambient: "heart", emblem: "lantern" }),
+  placeholderLodge({ slug: "larch", name: "Larch Lodge", accent: "#B5653A", glow: "#FFB24D", ambient: "maple", emblem: "campfire" }),
+  placeholderLodge({ slug: "rowan", name: "Rowan Lodge", accent: "#A33B3B", glow: "#FF8A7A", ambient: "round", emblem: "compass" }),
+  placeholderLodge({ slug: "alder", name: "Alder Lodge", accent: "#4F6B7A", glow: "#A9C6D6", ambient: "oval", emblem: "axe" }),
+];
+
+/** The lodges from earlier cohorts — kept intact, served at their original URLs. */
+const PAST_LODGES: Lodge[] = [
   {
     slug: "cjb",
+    cohort: "past",
+    logo: "/logos/cjb.png",
     name: "CJB Lodge",
     tagline: "Where friends figure out AI together — before AI starts making decisions for them.",
     level: "Beginner",
@@ -126,6 +217,8 @@ export const lodges: Lodge[] = [
   },
   {
     slug: "vampire",
+    cohort: "past",
+    logo: "/logos/vampire.png",
     name: "Vampire Lodge",
     tagline: "Drain the docs. Vibe the code. Deploy the beast.",
     level: "Beginner",
@@ -188,6 +281,8 @@ export const lodges: Lodge[] = [
   },
   {
     slug: "curiositymaxxer",
+    cohort: "past",
+    logo: "/logos/curiositymaxxer.png",
     name: "CuriosityMaxxer Lodge",
     tagline: "Build with the end in mind — deployment-focused from day one.",
     level: "Intermediate",
@@ -239,6 +334,8 @@ export const lodges: Lodge[] = [
   },
   {
     slug: "paiseh",
+    cohort: "past",
+    logo: "/logos/paiseh.png",
     name: "Paiseh Lodge",
     tagline: "Equipping you with tools to build anything you can imagine.",
     level: "Beginner–Intermediate",
@@ -281,6 +378,8 @@ export const lodges: Lodge[] = [
   },
   {
     slug: "wss",
+    cohort: "past",
+    logo: "/logos/wss.png",
     name: "WSS Lodge",
     tagline: "Real-world AI for real-world problems.",
     level: "Beginner",
@@ -333,6 +432,8 @@ export const lodges: Lodge[] = [
   },
   {
     slug: "hackstreet-boys",
+    cohort: "past",
+    logo: "/logos/hackstreet-boys.png",
     name: "HackStreet Boys",
     tagline: "Learn AI by building — you'll be the fire. 🔥",
     level: "Beginner–Intermediate",
@@ -385,6 +486,8 @@ export const lodges: Lodge[] = [
   },
   {
     slug: "llm",
+    cohort: "past",
+    logo: "/logos/llm.png",
     name: "LLM Lodge",
     status: "closed",
     tagline: "Build real projects while you learn how LLMs actually work.",
@@ -447,6 +550,10 @@ export const lodges: Lodge[] = [
     accent: "#8A93A6",
   },
 ];
+
+export const currentLodges = CURRENT_LODGES;
+export const pastLodges = PAST_LODGES;
+export const lodges: Lodge[] = [...CURRENT_LODGES, ...PAST_LODGES];
 
 export const getLodge = (slug: string) => lodges.find((l) => l.slug === slug);
 

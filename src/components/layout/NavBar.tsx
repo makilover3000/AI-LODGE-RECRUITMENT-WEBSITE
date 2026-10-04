@@ -2,17 +2,22 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { APPLY_URL } from "@/data/programme";
 
 const LINKS = [
   { href: "/#about", label: "About" },
   { href: "/#programme", label: "Programme" },
+  { href: "/#lodges", label: "Lodges" },
   { href: "/#process", label: "How to join" },
 ];
 
 export default function NavBar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  // lodge pages open on a dark pine hero: until the cream bar appears, the nav goes light
+  const onDark = usePathname().startsWith("/lodges") && !scrolled;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -36,10 +41,14 @@ export default function NavBar() {
             alt="SMU BIA"
             width={284}
             height={86}
-            className="h-7 w-auto invert"
+            className={`h-7 w-auto ${onDark ? "" : "invert"}`}
             priority
           />
-          <span className="font-display text-pine-900 text-lg leading-none tracking-[0.06em]">
+          <span
+            className={`font-display text-lg leading-none tracking-[0.06em] ${
+              onDark ? "text-cream-50" : "text-pine-900"
+            }`}
+          >
             AI&nbsp;Lodge
           </span>
         </Link>
@@ -49,13 +58,15 @@ export default function NavBar() {
             <Link
               key={l.href}
               href={l.href}
-              className="eyebrow text-pine-900/80 transition-colors hover:text-teal-deep"
+              className={`eyebrow transition-colors ${
+                onDark ? "text-cream-50/85 hover:text-glow" : "text-pine-900/80 hover:text-teal-deep"
+              }`}
             >
               {l.label}
             </Link>
           ))}
           <Link
-            href="https://forms.gle/ZU3dx3i3fioxkvjv8"
+            href={APPLY_URL}
             className="font-display rounded-full bg-teal-deep px-5 py-2 text-sm tracking-[0.08em] text-cream-50 shadow-[0_3px_0_var(--color-teal-ink)] transition-transform hover:-translate-y-0.5"
           >
             Apply
@@ -65,7 +76,9 @@ export default function NavBar() {
         <button
           type="button"
           onClick={() => setOpen((v) => !v)}
-          className="flex h-10 w-10 items-center justify-center rounded-md text-pine-900 md:hidden"
+          className={`flex h-11 w-11 items-center justify-center rounded-md md:hidden ${
+            onDark && !open ? "text-cream-50" : "text-pine-900"
+          }`}
           aria-label={open ? "Close menu" : "Open menu"}
           aria-expanded={open}
         >
@@ -107,7 +120,7 @@ export default function NavBar() {
             </Link>
           ))}
           <Link
-            href="https://forms.gle/ZU3dx3i3fioxkvjv8"
+            href={APPLY_URL}
             onClick={() => setOpen(false)}
             className="font-display mt-2 rounded-full bg-teal-deep px-5 py-2.5 text-center text-base tracking-[0.08em] text-cream-50"
           >

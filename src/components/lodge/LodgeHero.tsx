@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
-import { isClosed, type Lodge } from "@/data/lodges";
+import { isClosed, isPast, logoSrc, type Lodge } from "@/data/lodges";
+import { LODGE_REVEAL, PAST_COHORT_LABEL } from "@/data/programme";
 import LodgeMark from "./LodgeMark";
 import GuitarNeon from "./GuitarNeon";
 import ShipNeon from "./ShipNeon";
@@ -20,7 +21,8 @@ const BADGE =
   "inline-flex items-center whitespace-nowrap rounded-full px-3 py-1 text-[0.7rem] font-bold uppercase leading-none tracking-[0.14em]";
 
 export default function LodgeHero({ lodge }: { lodge: Lodge }) {
-  const closed = isClosed(lodge);
+  const past = isPast(lodge);
+  const closed = isClosed(lodge) && !past; // a past lodge says so itself — no second "closed" chip
   const accent = lodge.neonColor ?? lodge.accent;
 
   return (
@@ -40,28 +42,39 @@ export default function LodgeHero({ lodge }: { lodge: Lodge }) {
           shape a second time at a different scale, giving the hero real depth */}
       <LodgeMark
         variant="watermark"
-        slug={lodge.slug}
+        src={logoSrc(lodge)}
         color={accent}
         className="pointer-events-none absolute -right-[10%] top-1/2 h-[150%] w-[68%] -translate-y-1/2 opacity-[0.12] sm:opacity-[0.14]"
       />
       {/* scrim: keep the left text column clean over the watermark */}
       <div className="absolute inset-0 bg-gradient-to-r from-pine-900/85 via-pine-900/35 to-transparent" />
 
-      <div className="relative mx-auto max-w-5xl px-5 py-12 sm:px-8 sm:py-28">
+      <div className="relative mx-auto max-w-6xl px-5 py-12 sm:px-8 sm:py-28">
         <Link
-          href="/#lodges"
+          href={past ? "/lodges/past" : "/#lodges"}
           className="eyebrow inline-flex items-center gap-2 text-cream-50/70 transition-colors hover:text-glow"
         >
-          <span aria-hidden>←</span> Back to all lodges
+          <span aria-hidden>←</span> {past ? "Back to previous lodges" : "Back to all lodges"}
         </Link>
 
         <div className="mt-6 flex flex-wrap items-center gap-3">
-          <span
-            className={BADGE}
-            style={{ background: lodge.accent, color: readableOn(lodge.accent) }}
-          >
-            {lodge.level}
-          </span>
+          {lodge.placeholder ? (
+            <span className={`${BADGE} gap-2 bg-glow text-pine-900`}>
+              <span aria-hidden>●</span> Details drop {LODGE_REVEAL}
+            </span>
+          ) : (
+            <span
+              className={BADGE}
+              style={{ background: lodge.accent, color: readableOn(lodge.accent) }}
+            >
+              {lodge.level}
+            </span>
+          )}
+          {past && (
+            <span className={`${BADGE} border border-cream-50/30 bg-cream-50/10 text-cream-50`}>
+              Past lodge · {PAST_COHORT_LABEL}
+            </span>
+          )}
           {closed && (
             <span className={`${BADGE} gap-2 border border-cream-50/30 bg-cream-50/10 text-cream-50`}>
               <span aria-hidden>●</span> Not open for applications
@@ -91,7 +104,6 @@ export default function LodgeHero({ lodge }: { lodge: Lodge }) {
                 variant="emblem"
                 color={accent}
                 className="w-[clamp(250px,44vw,470px)] aspect-[1292/959]"
-                style={{ rotate: "-3deg" }}
               />
             ) : lodge.slug === "vampire" ? (
               <BatNeon
@@ -100,7 +112,6 @@ export default function LodgeHero({ lodge }: { lodge: Lodge }) {
                 /* wide mark (~1.9:1) sized by WIDTH in vw so it scales down on small
                    phones and never overflows the content column (checked at 320px) */
                 className="w-[clamp(200px,74vw,440px)] aspect-[1080/559]"
-                style={{ rotate: "-2deg" }}
               />
             ) : lodge.slug === "curiositymaxxer" ? (
               <ShipNeon
@@ -109,14 +120,12 @@ export default function LodgeHero({ lodge }: { lodge: Lodge }) {
                 /* sized by HEIGHT to the ~250-300px desktop band; the ship art is
                    wider than the guitar, so height (not width) governs its footprint */
                 className="h-[clamp(190px,24vw,296px)] aspect-[1317/1085]"
-                style={{ rotate: "-3deg" }}
               />
             ) : (
               <LodgeMark
-                slug={lodge.slug}
+                src={logoSrc(lodge)}
                 color={accent}
                 className="h-[clamp(180px,26vw,290px)] w-[clamp(180px,26vw,290px)]"
-                style={{ rotate: "-2deg" }}
               />
             )}
           </div>

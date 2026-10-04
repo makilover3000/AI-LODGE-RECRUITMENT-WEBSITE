@@ -1,5 +1,5 @@
 import type { CSSProperties } from "react";
-import type { Lodge } from "@/data/lodges";
+import { logoSrc, type Lodge } from "@/data/lodges";
 import Treeline from "@/components/ui/Treeline";
 import GuitarNeon from "@/components/lodge/GuitarNeon";
 import ShipNeon from "@/components/lodge/ShipNeon";
@@ -22,7 +22,7 @@ export default function LodgeTicker({ lodge }: { lodge: Lodge }) {
   const isBat = lodge.slug === "vampire";
   const isNeon = isGuitar || isShip || isBat; // the one-off neon marks stream slower
   const vars = {
-    "--mk": `url(/logos/${lodge.slug}.png)`,
+    "--mk": `url(${logoSrc(lodge)})`,
     "--c": accent,
     "--belt-dur": isNeon ? "24s" : "16s",
   } as CSSProperties;

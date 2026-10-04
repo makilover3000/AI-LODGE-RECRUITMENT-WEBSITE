@@ -30,12 +30,17 @@ export default function ScrollReveal({
     gsap.registerPlugin(ScrollTrigger);
     const ctx = gsap.context(() => {
       const targets = stagger > 0 ? Array.from(el.children) : el;
+      // Children with a CSS `transition-transform` (hover lifts on cards) would ease every
+      // GSAP frame and never settle — leaving them stuck part-way down. Switch transitions
+      // off for the reveal, then hand the element back to its own CSS when it's done.
+      gsap.set(targets, { transition: "none" });
       gsap.from(targets, {
         opacity: 0,
         y,
         duration: 0.85,
         ease: "power3.out",
         stagger,
+        clearProps: "transform,opacity,transition",
         scrollTrigger: { trigger: el, start: "top 84%", once: true },
       });
     }, el);

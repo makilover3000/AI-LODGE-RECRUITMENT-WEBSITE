@@ -4,7 +4,7 @@ import ScrollReveal from "@/components/ui/ScrollReveal";
 export default function LodgeOverview({ lodge }: { lodge: Lodge }) {
   return (
     <section className="bg-cream py-20">
-      <div className="mx-auto max-w-5xl px-5 sm:px-8">
+      <div className="mx-auto max-w-6xl px-5 sm:px-8">
         <ScrollReveal className="grid gap-10 md:grid-cols-[1.2fr_0.8fr]">
           <div>
             <p className="eyebrow text-teal-ink">The overview</p>

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { APPLY_URL } from "@/data/programme";
 import Fireplace from "./Fireplace";
 
 export default function ApplyCTA() {
@@ -22,7 +23,7 @@ export default function ApplyCTA() {
         </h2>
         <div className="mt-9 flex justify-center">
           <Link
-            href="https://forms.gle/ZU3dx3i3fioxkvjv8"
+            href={APPLY_URL}
             className="font-display rounded-full bg-glow-deep px-9 py-4 text-lg tracking-[0.06em] text-pine-900 shadow-[0_5px_0_#b97c2c] transition-transform hover:-translate-y-0.5"
           >
             Join us now →
