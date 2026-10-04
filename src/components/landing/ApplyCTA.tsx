@@ -22,7 +22,7 @@ export default function ApplyCTA() {
         </h2>
         <div className="mt-9 flex justify-center">
           <Link
-            href="https://smu.opine.asia/survey?id=d9968e73-86c2-42e2-a2b9-fa7ef7289a3c"
+            href="https://forms.gle/ZU3dx3i3fioxkvjv8"
             className="font-display rounded-full bg-glow-deep px-9 py-4 text-lg tracking-[0.06em] text-pine-900 shadow-[0_5px_0_#b97c2c] transition-transform hover:-translate-y-0.5"
           >
             Join us now →

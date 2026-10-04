@@ -2,9 +2,11 @@ import { Fragment } from "react";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 
 const DATES = [
-  { label: "Applications open", date: "13 Jul" },
-  { label: "Deadline", date: "2 Aug" },
-  { label: "Results", date: "11 Aug" },
+  { label: "Applications open", date: "5 Oct" },
+  { label: "Applications close", date: "16 Nov" },
+  { label: "Start Interviews", date: "26 Oct" },
+  { label: "End Interviews", date: "16 Dec" },
+  { label: "Results", date: "TBC" },
 ];
 
 export default function ApplicationsBanner() {

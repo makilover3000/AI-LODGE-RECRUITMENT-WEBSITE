@@ -10,7 +10,7 @@ const REASONS: { icon: CampIconName; title: string; body: string }[] = [
   },
   {
     icon: "compass",
-    title: "AI tools + foundations",
+    title: "AI tools and foundations",
     body: "Exposure to the AI tools people actually use, plus the foundational technical knowledge underneath them.",
   },
   {
@@ -20,8 +20,8 @@ const REASONS: { icon: CampIconName; title: string; body: string }[] = [
   },
   {
     icon: "signpost",
-    title: "Test a startup idea, for real",
-    body: "Your final hackathon project can be that startup idea you've always wanted to build — with mentors backing you, and external judges giving real feedback, like pitching to investors. A low-stakes way to test an idea, not just a coding exercise.",
+    title: "Compete in AI Lodge's hackathon",
+    body: "Your final hackathon project can be that startup idea you've always wanted to build, with mentors supporting and guiding you, and experienced industry judges giving real feedback.",
   },
 ];
 
@@ -31,15 +31,14 @@ export default function WhyJoin() {
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
         <div className="grid gap-8 lg:grid-cols-[1.5fr_1fr] lg:items-end">
           <div className="max-w-2xl">
-            <p className="eyebrow text-teal-ink">Why join a lodge</p>
             <h2 className="font-display mt-3 text-pine-900 text-h1">
-              Learn AI the cozy way — together
+              Why join AI lodge?
             </h2>
           </div>
           {/* a warm candid from a past lodge — desktop-only accent */}
           <div className="relative hidden aspect-[4/3] rotate-[-1.5deg] overflow-hidden rounded-2xl border-4 border-cream-50 shadow-[0_18px_44px_-22px_rgba(31,43,33,0.7)] lg:block">
             <Image
-              src="/moments/awsome-group.webp"
+              src="/moments/spring2026/awsome-group.webp"
               alt="Members of a past AI Lodge together"
               fill
               sizes="380px"

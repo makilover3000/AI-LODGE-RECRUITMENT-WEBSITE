@@ -11,10 +11,16 @@ type Stop = {
 
 const STOPS: Stop[] = [
   {
-    marker: "Weeks 1–8",
+    marker: "Weeks 1–7",
     title: "Lodge sessions",
     body: "Weekly hands-on sessions with your lodge — guided projects, building intuition and skills together.",
     icon: "signpost",
+  },
+  {
+    marker: "Week 5",
+    title: "AI Lodge exclusive industry workshops",
+    body: "Industry partners and experienced seniors will facilitate workshops on AI skills, tools, and more!",
+    icon: "campfire",
   },
   {
     marker: "Recess week",

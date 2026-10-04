@@ -8,7 +8,7 @@ const STAGES = [
   },
   {
     n: 2,
-    title: "Group interviews",
+    title: "Interviews",
     body: "Short interviews with the captains of your first choice lodge.",
   },
   {
