@@ -551,9 +551,19 @@ const PAST_LODGES: Lodge[] = [
   },
 ];
 
-export const currentLodges = CURRENT_LODGES;
+/** Every topic tag the previous lodges ran, de-duplicated — the pool placeholder cards draw from. */
+const TAG_POOL = [...new Set(PAST_LODGES.flatMap((l) => l.cardTags ?? l.topics.slice(0, 3)))];
+
+/** Until their details drop, placeholder lodges show 3 tags sampled from what past lodges
+ *  covered. Deterministic (stride 7 through the pool) so server and client render alike;
+ *  a lodge's own `cardTags` always wins once its real data lands. */
+export const currentLodges: Lodge[] = CURRENT_LODGES.map((l, i) =>
+  l.placeholder && !l.cardTags
+    ? { ...l, cardTags: [0, 1, 2].map((k) => TAG_POOL[((i * 3 + k) * 7) % TAG_POOL.length]) }
+    : l
+);
 export const pastLodges = PAST_LODGES;
-export const lodges: Lodge[] = [...CURRENT_LODGES, ...PAST_LODGES];
+export const lodges: Lodge[] = [...currentLodges, ...PAST_LODGES];
 
 export const getLodge = (slug: string) => lodges.find((l) => l.slug === slug);
 

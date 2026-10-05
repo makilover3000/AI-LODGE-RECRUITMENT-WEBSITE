@@ -3,7 +3,10 @@ import CampIcon, { CampIconName } from "@/components/ui/CampIcon";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 
 /** Drop a photo path here (e.g. "/moments/fall2026/OriPhoto.JPG") to replace the placeholder. */
-const PHOTO: { src: string; alt: string } | null = null;
+const PHOTO: { src: string; alt: string } | null = {
+  src: "/moments/fall2026/tencent-ai-safety-workshop.webp",
+  alt: "AI Lodge lodgers and captains together at the Tencent × SCOGA AI Safety Workshop",
+};
 
 const REASONS: { icon: CampIconName; title: string; body: string }[] = [
   {
@@ -34,7 +37,7 @@ function PhotoFrame({ className = "" }: { className?: string }) {
     <figure
       className={`rounded-[14px] border-[6px] border-cream-50 bg-cream-50 shadow-[0_22px_50px_-22px_rgba(31,43,33,0.65)] ${className}`}
     >
-      <div className="relative aspect-[16/10] overflow-hidden rounded-[8px] lg:aspect-[5/4]">
+      <div className="relative aspect-[4/3] overflow-hidden rounded-[8px]">
         {PHOTO ? (
           <Image
             src={PHOTO.src}

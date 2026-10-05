@@ -111,7 +111,7 @@ export default function LodgeCard({ lodge }: { lodge: Lodge }) {
         </p>
         {/* tags: room for two rows */}
         <div className={`mt-4 flex flex-wrap content-start gap-2 ${slot("min-h-[3.75rem]")}`}>
-          {lodge.placeholder
+          {lodge.placeholder && !lodge.cardTags
             ? ["w-20", "w-24", "w-16"].map((w) => (
                 // dashed "unwritten" tags — the shape of what's coming, without inventing it
                 <span
