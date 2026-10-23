@@ -4,6 +4,7 @@ import { LODGE_REVEAL, PAST_COHORT_LABEL } from "@/data/programme";
 import LodgeCard from "./LodgeCard";
 import LodgeMark from "@/components/lodge/LodgeMark";
 import ScrollReveal from "@/components/ui/ScrollReveal";
+import CampIcon from "@/components/ui/CampIcon";
 
 // Cards run easy -> hard by skill level, with closed lodges pinned last and unannounced
 // ("TBA") lodges after the announced ones. Sort is stable, so lodges sharing a level keep
@@ -19,6 +20,8 @@ const orderedLodges = [...currentLodges].sort((a, b) => {
   if (isClosed(a) !== isClosed(b)) return isClosed(a) ? 1 : -1;
   return LEVEL_RANK[a.level] - LEVEL_RANK[b.level];
 });
+
+const hasPlaceholders = currentLodges.some((l) => l.placeholder);
 
 /** Two-column tile that closes the grid and leads to the earlier cohort's lodges. */
 function PreviousLodgesTile() {
@@ -87,11 +90,23 @@ export default function LodgeGrid() {
           </p>
         </div>
 
+        {/* placeholder-name notice — disappears on its own once every lodge has real data */}
+        {hasPlaceholders && (
+          <p className="mt-10 flex items-start gap-3 rounded-xl border-2 border-dashed border-roof/40 bg-cream-50 px-4 py-3 text-base text-charcoal/90 sm:items-center sm:px-5">
+            <CampIcon name="signpost" className="h-6 w-6 shrink-0 text-roof" />
+            <span>
+              <strong className="font-bold text-pine-900">Heads up:</strong>{" "}
+              the lodge names below are temporary placeholders. Each lodge&apos;s real name, focus
+              and captains will replace them once lodge details are released.
+            </span>
+          </p>
+        )}
+
         {/* 10 cards + the 2-wide tile fill the grid exactly: 3/3/3/1+2 at 3 cols,
             five full rows + a full-width tile at 2 cols */}
         <ScrollReveal
           stagger={0.06}
-          className="mt-12 grid auto-rows-fr gap-6 sm:grid-cols-2 lg:grid-cols-3"
+          className={`${hasPlaceholders ? "mt-6" : "mt-12"} grid auto-rows-fr gap-6 sm:grid-cols-2 lg:grid-cols-3`}
         >
           {orderedLodges.map((lodge) => (
             <LodgeCard key={lodge.slug} lodge={lodge} />

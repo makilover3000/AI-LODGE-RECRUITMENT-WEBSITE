@@ -120,7 +120,7 @@ const placeholderLodge = ({
   emblem,
   tagline: `Details drop ${LODGE_REVEAL}.`,
   level: "TBA",
-  forWho: `${name}'s focus, captains and weekly trail are being finalised. Full details drop ${LODGE_REVEAL} — check back then to see if it's the lodge for you.`,
+  forWho: `${name}'s focus, captains and weekly trail are being finalised. Full details drop ${LODGE_REVEAL} — check back to see if it's the lodge for you.`,
   forWhoCard: `Focus, captains and weekly trail drop ${LODGE_REVEAL}.`,
   why: "Every lodge runs on the same backbone: weekly hands-on sessions in a small group of 8–10 lodgers with 3 lodge captains, a lodge hack day, and the Week 10 hackathon finals.",
   topics: [

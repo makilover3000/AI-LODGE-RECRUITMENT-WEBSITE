@@ -5,8 +5,9 @@
 
 export const APPLY_URL = "https://forms.gle/ZU3dx3i3fioxkvjv8";
 
-/** when the new cohort's lodge details (focus, captains, weekly trail) go live */
-export const LODGE_REVEAL = "26 Oct";
+/** when the new cohort's lodge details (focus, captains, weekly trail) go live — read in
+ *  sentences like "Details drop {LODGE_REVEAL}", so use "soon" or a date like "26 Oct" */
+export const LODGE_REVEAL = "soon";
 
 /** the cohort the 7 original lodges ran in (shown on their pages as "Past lodge · …") */
 export const PAST_COHORT_LABEL = "Fall 2026";
@@ -32,8 +33,8 @@ export const KEY_DATES: KeyDate[] = [
   {
     day: "26",
     month: "Oct",
-    label: "Lodges revealed · interviews begin",
-    note: "Full lodge details drop and the first interviews start.",
+    label: "Interviews begin",
+    note: "The first interviews start.",
   },
   {
     day: "16",
