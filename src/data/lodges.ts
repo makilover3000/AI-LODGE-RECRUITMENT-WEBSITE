@@ -443,7 +443,7 @@ const CURRENT_LODGES: Lodge[] = [
     topics: BOLIAO_TOPICS,
     cardTags: ["AI Agents", "Multi-Agent Systems", "GraphRAG"],
     captains: [
-      { name: "Yash", detail: "SCIS (CS) / Year 2", telegram: "Yash_annem", image: "/captains/yash-2.jpg" },
+      cap("Yashwanth", "yashwanth", "SCIS (IS) / Year 2", "yaashyyyy"),
       cap("Shaun", "shaun", "SCIS (IS) / Year 2", "shaunpan"),
       { name: "Sonya", detail: "SCIS (IS) / Year 2", telegram: "sooony_a", image: "/captains/sonya-2.jpg" },
     ],
