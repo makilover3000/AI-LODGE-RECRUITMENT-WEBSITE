@@ -14,7 +14,12 @@ import SkullNeon from "@/components/lodge/SkullNeon";
  * Pure CSS marquee (zero JS); freezes under prefers-reduced-motion. Sits on the
  * pine band between the hero and the (cream) overview.
  */
-const PER_HALF = 16; // tiles per half; the track is duplicated for a seamless loop
+// The track is two identical halves sliding left by exactly one half, so the loop is seamless
+// ONLY if a single half is wider than the screen — otherwise the belt visibly "runs out" on the
+// right before snapping back. 40 tiles ≈ 2,700px+ per half (narrowest tile ~68px), which covers
+// any desktop/ultrawide width. Speed stays the same: duration scales with the tile count.
+const PER_HALF = 40;
+const SECONDS_PER_TILE = { flat: 1, neon: 1.5 }; // was 16s / 24s for 16 tiles
 
 export default function LodgeTicker({ lodge }: { lodge: Lodge }) {
   const accent = lodge.neonColor ?? lodge.accent;
@@ -26,7 +31,7 @@ export default function LodgeTicker({ lodge }: { lodge: Lodge }) {
   const vars = {
     "--mk": `url(${logoSrc(lodge)})`,
     "--c": accent,
-    "--belt-dur": isNeon ? "24s" : "16s",
+    "--belt-dur": `${PER_HALF * (isNeon ? SECONDS_PER_TILE.neon : SECONDS_PER_TILE.flat)}s`,
   } as CSSProperties;
 
   const half = (prefix: string) =>

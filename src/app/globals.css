@@ -404,7 +404,7 @@ body {
 
 /* TICKER — the tiny streaming mark: simplified outline + gentle glow + shimmer. */
 .ail-guitar-ticker {
-  animation: ail-shimmer 2.6s ease-in-out infinite;
+  /* static on purpose: see .ail-ticker-track */
 }
 .ail-guitar-ticker .ail-guitar-halo {
   stroke-width: 2.4;
@@ -519,7 +519,7 @@ body {
 
 /* TICKER — the tiny streaming mark: simplified outline + gentle glow + shimmer. */
 .ail-ship-ticker {
-  animation: ail-shimmer 2.6s ease-in-out infinite;
+  /* static on purpose: see .ail-ticker-track */
 }
 .ail-ship-ticker .ail-ship-halo {
   stroke-width: 2.2;
@@ -633,7 +633,7 @@ body {
 
 /* TICKER — the tiny streaming mark: simplified outline + gentle glow + shimmer. */
 .ail-bat-ticker {
-  animation: ail-shimmer 2.6s ease-in-out infinite;
+  /* static on purpose: see .ail-ticker-track */
 }
 .ail-bat-ticker .ail-bat-halo {
   stroke-width: 2;
@@ -676,17 +676,21 @@ body {
 }
 
 /* per-lodge logo ticker: faster, tiny accent marks with a gentle shimmer */
+/* The ONLY thing that animates in a belt: the track slides on the compositor. Tiles inside
+   must stay static (no per-tile animation) or the whole strip repaints every frame and stutters. */
 .ail-ticker-track {
   display: flex;
   width: max-content;
   will-change: transform;
+  contain: layout paint;
+  backface-visibility: hidden;
   animation: ail-marquee var(--belt-dur, 22s) linear infinite;
 }
 .ail-ticker-mark {
   /* lift dark accents (vampire red, llm slate) so they read on the pine band */
   background-color: color-mix(in srgb, var(--c) 84%, #fff8ec);
   opacity: 0.85;
-  animation: ail-shimmer 2.6s ease-in-out infinite;
+  /* static on purpose: see .ail-ticker-track */
 }
 @keyframes ail-shimmer {
   0%,
@@ -808,7 +812,7 @@ body {
 
 /* TICKER — the tiny streaming mark: thin tubes + gentle glow + shimmer. */
 .ail-skull-ticker {
-  animation: ail-shimmer 2.6s ease-in-out infinite;
+  /* static on purpose: see .ail-ticker-track */
 }
 .ail-skull-ticker .ail-skull-halo {
   stroke-width: 1.8;

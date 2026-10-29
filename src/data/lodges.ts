@@ -481,9 +481,11 @@ const CURRENT_LODGES: Lodge[] = [
     topics: SPICE_TOPICS,
     cardTags: ["Multi-Agent AI", "A2A Systems", "AI for Decisions"],
     captains: [
+      // photos still to come for Felice + Saelin — image "" shows the pine silhouette
+      { name: "Felice", telegram: "felicesuryanata", image: "" },
+      { name: "Tam", telegram: "Tam6701", image: "/captains/tam.jpg" },
+      { name: "Saelin", telegram: "s3_1in", image: "" },
       { name: "Gabriel", detail: "MITB / Year 2", telegram: "GMSidik", image: "/captains/gabriel-2.jpg" },
-      { name: "Captain TBA", detail: "Revealed soon", telegram: "tbc", image: "" },
-      { name: "Captain TBA", detail: "Revealed soon", telegram: "tbc", image: "" },
     ],
     weeks: tentativeWeeks(SPICE_TOPICS),
     trailTentative: true,
