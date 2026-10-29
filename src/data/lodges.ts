@@ -394,7 +394,7 @@ const CURRENT_LODGES: Lodge[] = [
     captains: [
       cap("Raeann", "raeann", "SCIS (IS) / Year 1", "raeelim"),
       cap("Wei Kai", "wei-kai", "SCIS (IS) / Year 1", "wa_kii"),
-      cap("Philbert", "philbert", "SCIS (IS) / Year 2", "wantonwarlord"),
+      cap("Philbert", "philbert", "SCIS (SE) / Year 2", "wantonwarlord"),
       { name: "Shahad", detail: "SOB / Year 5", telegram: "SMKxx1", image: "/captains/shahad-2.jpg" },
     ],
     weeks: tentativeWeeks(SUPERPOWER_TOPICS),
