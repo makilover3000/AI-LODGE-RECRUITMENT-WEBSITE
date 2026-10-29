@@ -93,3 +93,5 @@ public/entry/*.png
 *.avif
 /lodge photos/
 !/public/**
+# ...except the heavy entry-scene PNG sources (only their optimised .jpg is served)
+/public/entry/*.png
