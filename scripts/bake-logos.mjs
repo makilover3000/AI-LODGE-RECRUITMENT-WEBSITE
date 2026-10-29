@@ -28,6 +28,14 @@ const MODES = {
   red: ({ lo, hi }) => (r, g, b) => (r > 90 ? clamp((r - Math.max(g, b) - lo) / (hi - lo)) : 0),
   colour: ({ lo, hi }) => (r, g, b) => clamp((hi - Math.min(r, g, b)) / (hi - lo)),
   alpha: ({ lo, hi }) => (r, g, b, a) => clamp((a - lo) / (hi - lo)),
+  // stencil: the COLOURED parts become the mark and black ink + white ground are cut out,
+  // so dark facial features (eye sockets, mouth) read as holes; yellow hues are lighter
+  stencil: ({ lo = 60, hi = 130, yellow = 0.5 }) => (r, g, b) => {
+    const mx = Math.max(r, g, b), mn = Math.min(r, g, b), chroma = mx - mn;
+    const base = clamp((chroma - lo) / (hi - lo));
+    const isYellow = r > 180 && g > 130 && b < 120;
+    return base * (isYellow ? yellow : 1);
+  },
   // "everything that isn't the dark background and isn't yellow": a 3D red-and-yellow
   // emblem flattens to its red parts (border + letter), with the yellow field cut out
   // red hue at any lightness (dark maroon bevels to bright faces) + white specular glints;
@@ -64,6 +72,9 @@ const JOBS = [
   ["superpower.jpg", "superpower", "emblem", { bgMax: 50, yRatio: 24, clean: 1.6, cut: 128, trace: { turdSize: 60, alphaMax: 1.1, optTolerance: 0.4 } }],
   ["boliao.jpg", "boliao", "dark", { lo: 70, hi: 120 }],
   ["spice.jpg", "spice", "colour", { lo: 225, hi: 245, clean: 1.5, cut: 128 }],
+  // v2: flaming skull-chilli as a stencil — chilli/flames/stem are the mark, black ink
+  // (eyes, mouth, outlines) is cut out so the skull face reads; flames at half strength
+  ["spicev2 logo.jpg", "spice-2", "stencil", { lo: 30, hi: 85, yellow: 0.55 }],
   ["despacito.png", "despacito", "alpha", { lo: 150, hi: 220 }],
 ];
 // filled emblem silhouette minus its yellow field and neutral-black recesses

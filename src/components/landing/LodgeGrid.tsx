@@ -5,11 +5,12 @@ import LodgeCard from "./LodgeCard";
 import LodgeMark from "@/components/lodge/LodgeMark";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 
-// This cohort's lodges are open to anyone, so cards run A→Z by name, with any lodge whose
-// details haven't dropped yet (e.g. Spice) placed last.
+// This cohort's lodges are open to anyone, so cards run A→Z by name — except S.P.I.C.E.,
+// which sits last by request (as does any lodge whose details haven't dropped yet).
+const LAST = new Set(["spice"]);
 const orderedLodges = [...currentLodges].sort(
   (a, b) =>
-    Number(!!a.placeholder) - Number(!!b.placeholder) ||
+    Number(!!a.placeholder || LAST.has(a.slug)) - Number(!!b.placeholder || LAST.has(b.slug)) ||
     a.name.localeCompare(b.name, "en", { sensitivity: "base" })
 );
 

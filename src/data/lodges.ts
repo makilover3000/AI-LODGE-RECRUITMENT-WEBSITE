@@ -134,6 +134,8 @@ const cap = (name: string, image: string, detail?: string, telegram = "tbc"): Ca
  * A default lodge for the new cohort, shown until its real details drop. `accent` is the dark
  * tone (legible as text on cream); `glow` is its light partner (legible on the pine hero/cards).
  */
+// kept for any future lodge whose details haven't dropped yet (none right now)
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const placeholderLodge = ({
   slug,
   name,
@@ -252,6 +254,17 @@ const BOLIAO_TOPICS = [
   "Latest AI tools, frameworks & trends",
 ];
 
+const SPICE_TOPICS = [
+  "AI for decision making & AI bias",
+  "Managing context & memory",
+  "Agentic workflows",
+  "Tool use & orchestration patterns",
+  "Agent-to-agent (A2A) interaction",
+  "Multi-agent systems for negotiation",
+  "Logging, tracing & evaluating your systems",
+  "Economics & societal impacts of AI",
+];
+
 const CURRENT_LODGES: Lodge[] = [
   {
     slug: "mit",
@@ -318,7 +331,7 @@ const CURRENT_LODGES: Lodge[] = [
     cardTags: ["Multimodal AI", "Image & Audio", "Generative Media"],
     captains: [
       cap("Kaavya", "kaavya", "SCIS (IS) / Year 2", "kkaavya"),
-      cap("Hari", "hari", "SCIS (IS) / Year 2", "harianagrandekutty"),
+      cap("Hari", "hari-2", "SCIS (IS) / Year 2", "harianagrandekutty"),
       cap("Marilyn", "marilyn", "MIM", "llama_louie"),
     ],
     weeks: tentativeWeeks(HAWKINS_TOPICS),
@@ -454,17 +467,31 @@ const CURRENT_LODGES: Lodge[] = [
     accent: "#8A6410", // duckling ochre
     neonColor: "#FFD966",
   },
-  placeholderLodge({
+  {
     slug: "spice",
-    name: "Spice Lodge",
-    logo: "/logos/spice.png",
-    accent: "#B23A2A", // chilli red
-    glow: "#FF6B4A",
-    ambient: "teardrop",
+    cohort: "current",
+    logo: "/logos/spice-2.png",
+    name: "S.P.I.C.E. Lodge",
+    tagline: "AI for decision making — from the fundamentals to multi-agent negotiations.",
+    level: "TBA", // not shown for this cohort (open to all)
+    forWho:
+      "Anyone with some coding experience — for example Python or calling APIs — who wants to build agents that reason, coordinate and decide.",
+    forWhoCard: "For those with some coding experience (Python, APIs) who want to build agents.",
+    why: "We start from the fundamentals and work towards setting up agentic workflows — and possibly running multi-agent systems for negotiations. You'll learn how to manage context and memory, agentic workflows, agent-to-agent (A2A) interaction, tool use and other orchestration patterns. We'll adopt an experimental mindset and evaluate our systems through effective logging and tracing — and also spend time on the economics and societal impacts of AI.",
+    topics: SPICE_TOPICS,
+    cardTags: ["Multi-Agent AI", "A2A Systems", "AI for Decisions"],
     captains: [
       { name: "Gabriel", detail: "MITB / Year 2", telegram: "GMSidik", image: "/captains/gabriel-2.jpg" },
+      { name: "Captain TBA", detail: "Revealed soon", telegram: "tbc", image: "" },
+      { name: "Captain TBA", detail: "Revealed soon", telegram: "tbc", image: "" },
     ],
-  }),
+    weeks: tentativeWeeks(SPICE_TOPICS),
+    trailTentative: true,
+    schedule: "Mondays · time TBC",
+    ambient: "teardrop",
+    accent: "#B23A2A", // chilli red
+    neonColor: "#FF6B4A",
+  },
 ];
 
 /** The lodges from earlier cohorts — kept intact, served at their original URLs. */
