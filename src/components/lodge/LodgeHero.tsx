@@ -9,9 +9,10 @@ import BatNeon from "./BatNeon";
 import DespacitoShowpiece from "./DespacitoShowpiece";
 import BryanShowpiece from "./BryanShowpiece";
 import PandaShowpiece from "./PandaShowpiece";
+import SpiceShowpiece from "./SpiceShowpiece";
 
 /** lodges whose hero emblem is a full layered showpiece (no faint watermark, tighter bottom) */
-const SHOWPIECES = new Set(["despacito", "bryan", "pandai"]);
+const SHOWPIECES = new Set(["despacito", "bryan", "pandai", "spice"]);
 
 /** Pick a legible text colour (pine-900 or cream-50) for a given accent background. */
 function readableOn(hex: string) {
@@ -143,6 +144,9 @@ export default function LodgeHero({ lodge }: { lodge: Lodge }) {
             ) : lodge.slug === "bryan" ? (
               /* the night badge — wide-ish art, sized by height to hold the same band */
               <BryanShowpiece className="mt-6 h-[clamp(300px,36vw,490px)] aspect-[900/839] lg:mt-0" />
+            ) : lodge.slug === "spice" ? (
+              /* the watercolour chilli — near-square art */
+              <SpiceShowpiece className="mt-6 h-[clamp(300px,36vw,480px)] aspect-[900/919] lg:mt-0" />
             ) : lodge.slug === "pandai" ? (
               /* just the panda — portrait art, sized by height like Despacito */
               <PandaShowpiece className="mt-8 h-[clamp(310px,36vw,480px)] aspect-[1053/1290] lg:mt-0" />

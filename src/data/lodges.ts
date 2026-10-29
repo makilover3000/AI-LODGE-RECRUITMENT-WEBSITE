@@ -433,7 +433,7 @@ const CURRENT_LODGES: Lodge[] = [
       cap("Clayton", "clayton", "SCIS (IS) / Year 1", "haid1lau"),
       cap("Elton", "elton", "SCIS (IS) / Year 1", "elt_nn"),
       cap("Dikshaa", "dikshaa-2", "SCIS (IS) / Year 2", "shaa_rukhan"),
-      { name: "Makendra", detail: "SCIS (IS) / Year 2", telegram: "chaneldebleu", image: "/captains/makendra-4.jpg" },
+      { name: "Makendra", detail: "SCIS (IS) / Year 2", telegram: "gooselover3000", image: "/captains/makendra-4.jpg" },
     ],
     weeks: tentativeWeeks(DESPACITO_TOPICS),
     trailTentative: true,
@@ -481,10 +481,10 @@ const CURRENT_LODGES: Lodge[] = [
     topics: SPICE_TOPICS,
     cardTags: ["Multi-Agent AI", "A2A Systems", "AI for Decisions"],
     captains: [
-      // photos still to come for Felice + Saelin — image "" shows the pine silhouette
+      // photo still to come for Felice — image "" shows the pine silhouette
       { name: "Felice", telegram: "felicesuryanata", image: "" },
       { name: "Tam", telegram: "Tam6701", image: "/captains/tam.jpg" },
-      { name: "Saelin", telegram: "s3_1in", image: "" },
+      { name: "Saelin", telegram: "s3_1in", image: "/captains/saelin.jpg" },
       { name: "Gabriel", detail: "MITB / Year 2", telegram: "GMSidik", image: "/captains/gabriel-2.jpg" },
     ],
     weeks: tentativeWeeks(SPICE_TOPICS),
@@ -593,7 +593,7 @@ const PAST_LODGES: Lodge[] = [
       {
         name: "Makendra",
         detail: "SCIS (IS) / Year 2",
-        telegram: "chaneldebleu",
+        telegram: "gooselover3000",
         image: "/captains/makendra-3.jpg",
       },
     ],
