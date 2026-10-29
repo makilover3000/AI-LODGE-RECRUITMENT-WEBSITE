@@ -5,6 +5,7 @@ import LodgeMark from "@/components/lodge/LodgeMark";
 import GuitarNeon from "@/components/lodge/GuitarNeon";
 import ShipNeon from "@/components/lodge/ShipNeon";
 import BatNeon from "@/components/lodge/BatNeon";
+import SkullNeon from "@/components/lodge/SkullNeon";
 
 /** The mark hung on the card's log wall. Every card gives it the same slot — top-right,
  *  64px tall, right edges flush — so marks line up across a row whatever their shape.
@@ -16,13 +17,20 @@ function CardMark({ lodge }: { lodge: Lodge }) {
     mark = <GuitarNeon variant="mini" color={color} className="relative h-full aspect-[1292/959]" />;
   } else if (lodge.slug === "vampire") {
     mark = <BatNeon variant="mini" color={color} className="relative w-full aspect-[1080/559]" />;
+  } else if (lodge.slug === "despacito") {
+    mark = <SkullNeon variant="mini" color={color} className="relative h-full aspect-[856/964]" />;
   } else if (lodge.slug === "curiositymaxxer") {
     mark = <ShipNeon variant="mini" color={color} className="relative h-full aspect-[1317/1085]" />;
   } else {
-    mark = <LodgeMark variant="mini" src={logoSrc(lodge)} color={color} className="relative h-14 w-14" />;
+    mark = <LodgeMark variant="mini" src={logoSrc(lodge)} color={color} className="relative h-16 w-16" />;
   }
   return (
-    <div className="absolute right-4 top-3 flex h-16 w-[104px] items-center justify-end">
+    <div className="absolute right-4 top-3 isolate flex h-16 w-[104px] items-center justify-end">
+      {/* a soft dark pool behind the mark so thin / red marks read on the mid-brown log wall */}
+      <div
+        aria-hidden
+        className="absolute -inset-3 -z-10 rounded-full bg-[radial-gradient(closest-side,rgba(28,18,12,0.75),transparent)]"
+      />
       {mark}
     </div>
   );
@@ -88,17 +96,25 @@ export default function LodgeCard({ lodge }: { lodge: Lodge }) {
       {/* body — a fixed template: every slot reserves the same height on every card, so
           cards are identical boxes and their contents line up like table cells */}
       <div className="flex flex-1 flex-col p-6">
+        {/* badge slot: past lodges keep their level; this cohort's lodges are open to
+            anyone (no difficulty shown); an unannounced lodge says when it reveals */}
         <span
           className={`${BADGE} gap-2 self-start ${
-            LEVEL_STYLES[lodge.placeholder ? "TBA" : lodge.level]
+            lodge.placeholder
+              ? LEVEL_STYLES.TBA
+              : isPast(lodge)
+                ? LEVEL_STYLES[lodge.level]
+                : "bg-teal-deep/12 text-teal-ink"
           }`}
         >
           {lodge.placeholder ? (
             <>
               <span aria-hidden>●</span> Reveals {LODGE_REVEAL}
             </>
-          ) : (
+          ) : isPast(lodge) ? (
             lodge.level
+          ) : (
+            "Open to all"
           )}
         </span>
         {/* tagline: 3-line slot on narrower cards, 2-line slot on wide (xl) cards */}
@@ -129,10 +145,18 @@ export default function LodgeCard({ lodge }: { lodge: Lodge }) {
                 </span>
               ))}
         </div>
-        <span className="font-display mt-auto inline-flex items-center gap-2 pt-5 text-teal-deep">
-          {lodge.placeholder ? "Peek inside" : closed ? "View the lodge" : "Meet the lodge"}
-          <span className="transition-transform group-hover:translate-x-1">→</span>
-        </span>
+        {/* CTA + (current lodges) their tentative day/time, sharing the bottom row */}
+        <div className="mt-auto flex items-center justify-between gap-3 pt-5">
+          <span className="font-display inline-flex items-center gap-2 text-teal-deep">
+            {lodge.placeholder ? "Peek inside" : closed ? "View the lodge" : "Meet the lodge"}
+            <span className="transition-transform group-hover:translate-x-1">→</span>
+          </span>
+          {lodge.schedule && (
+            <span className="truncate text-right text-[0.8rem] font-semibold text-charcoal/90">
+              {lodge.schedule.replace(" evenings", "")}
+            </span>
+          )}
+        </div>
       </div>
     </Link>
   );

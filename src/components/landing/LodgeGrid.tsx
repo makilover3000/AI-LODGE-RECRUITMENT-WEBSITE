@@ -1,34 +1,29 @@
 import Link from "next/link";
-import { currentLodges, pastLodges, isClosed, logoSrc, type Lodge } from "@/data/lodges";
-import { LODGE_REVEAL, PAST_COHORT_LABEL } from "@/data/programme";
+import { currentLodges, pastLodges, logoSrc } from "@/data/lodges";
+import { PAST_COHORT_LABEL } from "@/data/programme";
 import LodgeCard from "./LodgeCard";
 import LodgeMark from "@/components/lodge/LodgeMark";
 import ScrollReveal from "@/components/ui/ScrollReveal";
-import CampIcon from "@/components/ui/CampIcon";
 
-// Cards run easy -> hard by skill level, with closed lodges pinned last and unannounced
-// ("TBA") lodges after the announced ones. Sort is stable, so lodges sharing a level keep
-// their order in lodges.ts.
-const LEVEL_RANK: Record<Lodge["level"], number> = {
-  Beginner: 0,
-  "Beginner–Intermediate": 1,
-  Intermediate: 2,
-  TBA: 3,
-};
+// This cohort's lodges are open to anyone, so cards run A→Z by name, with any lodge whose
+// details haven't dropped yet (e.g. Spice) placed last.
+const orderedLodges = [...currentLodges].sort(
+  (a, b) =>
+    Number(!!a.placeholder) - Number(!!b.placeholder) ||
+    a.name.localeCompare(b.name, "en", { sensitivity: "base" })
+);
 
-const orderedLodges = [...currentLodges].sort((a, b) => {
-  if (isClosed(a) !== isClosed(b)) return isClosed(a) ? 1 : -1;
-  return LEVEL_RANK[a.level] - LEVEL_RANK[b.level];
-});
-
-const hasPlaceholders = currentLodges.some((l) => l.placeholder);
-
-/** Two-column tile that closes the grid and leads to the earlier cohort's lodges. */
-function PreviousLodgesTile() {
+/** Tile leading to the earlier cohort's lodges: the 10th grid cell at 1–2 columns, a
+ *  full-width banner under the 3-column grid (`banner`). */
+function PreviousLodgesTile({ banner = false }: { banner?: boolean }) {
   return (
     <Link
       href="/lodges/past"
-      className="group relative isolate flex min-h-[17rem] flex-col justify-between overflow-hidden rounded-2xl border-2 border-pine-900/15 bg-pine-900 bg-cover bg-center p-7 text-cream-50 shadow-[0_12px_34px_-22px_rgba(31,43,33,0.7)] transition-transform hover:-translate-y-1.5 max-sm:order-first sm:col-span-2 sm:p-9"
+      className={`group relative isolate flex overflow-hidden rounded-2xl border-2 border-pine-900/15 bg-pine-900 bg-cover bg-center p-7 text-cream-50 shadow-[0_12px_34px_-22px_rgba(31,43,33,0.7)] transition-transform hover:-translate-y-1.5 sm:p-9 ${
+        banner
+          ? "flex-row items-center justify-between gap-10"
+          : "min-h-[17rem] flex-col justify-between max-sm:order-first lg:hidden"
+      }`}
       style={{ backgroundImage: "url('/textures/cabin-log.jpg')" }}
     >
       <div
@@ -46,7 +41,13 @@ function PreviousLodgesTile() {
         </p>
       </div>
 
-      <div className="mt-8 flex flex-wrap items-end justify-between gap-6">
+      <div
+        className={
+          banner
+            ? "flex shrink-0 flex-col items-end gap-5"
+            : "mt-8 flex flex-wrap items-end justify-between gap-6"
+        }
+      >
         {/* the old lodges' own marks, lit in their colours */}
         <ul aria-hidden className="flex flex-wrap gap-3">
           {pastLodges.map((l) => (
@@ -84,34 +85,21 @@ export default function LodgeGrid() {
               beginners to the frontier.
             </p>
           </div>
-          <p className="inline-flex items-center gap-2 self-start rounded-full bg-glow/60 px-4 py-2 text-sm font-semibold text-pine-900 lg:self-auto">
-            <span aria-hidden className="inline-block h-2 w-2 rounded-full bg-roof" />
-            Full lodge details drop {LODGE_REVEAL}
-          </p>
         </div>
 
-        {/* placeholder-name notice — disappears on its own once every lodge has real data */}
-        {hasPlaceholders && (
-          <p className="mt-10 flex items-start gap-3 rounded-xl border-2 border-dashed border-roof/40 bg-cream-50 px-4 py-3 text-base text-charcoal/90 sm:items-center sm:px-5">
-            <CampIcon name="signpost" className="h-6 w-6 shrink-0 text-roof" />
-            <span>
-              <strong className="font-bold text-pine-900">Heads up:</strong>{" "}
-              the lodge names below are temporary placeholders. Each lodge&apos;s real name, focus
-              and captains will replace them once lodge details are released.
-            </span>
-          </p>
-        )}
-
-        {/* 10 cards + the 2-wide tile fill the grid exactly: 3/3/3/1+2 at 3 cols,
-            five full rows + a full-width tile at 2 cols */}
+        {/* 9 lodges fill the grid exactly: 3 full rows at 3 cols (the previous-lodges banner
+            sits underneath), or 9 cards + the tile = 5 full rows at 2 cols */}
         <ScrollReveal
           stagger={0.06}
-          className={`${hasPlaceholders ? "mt-6" : "mt-12"} grid auto-rows-fr gap-6 sm:grid-cols-2 lg:grid-cols-3`}
+          className="mt-12 grid auto-rows-fr gap-6 sm:grid-cols-2 lg:grid-cols-3"
         >
           {orderedLodges.map((lodge) => (
             <LodgeCard key={lodge.slug} lodge={lodge} />
           ))}
           <PreviousLodgesTile />
+        </ScrollReveal>
+        <ScrollReveal className="mt-6 hidden lg:block">
+          <PreviousLodgesTile banner />
         </ScrollReveal>
       </div>
     </section>

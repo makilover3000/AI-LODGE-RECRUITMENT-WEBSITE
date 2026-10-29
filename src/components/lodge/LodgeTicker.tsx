@@ -4,6 +4,7 @@ import Treeline from "@/components/ui/Treeline";
 import GuitarNeon from "@/components/lodge/GuitarNeon";
 import ShipNeon from "@/components/lodge/ShipNeon";
 import BatNeon from "@/components/lodge/BatNeon";
+import SkullNeon from "@/components/lodge/SkullNeon";
 
 /**
  * A fast ribbon of the lodge's OWN logo, repeated tiny and streaming past — a
@@ -20,7 +21,8 @@ export default function LodgeTicker({ lodge }: { lodge: Lodge }) {
   const isGuitar = lodge.slug === "hackstreet-boys";
   const isShip = lodge.slug === "curiositymaxxer";
   const isBat = lodge.slug === "vampire";
-  const isNeon = isGuitar || isShip || isBat; // the one-off neon marks stream slower
+  const isSkull = lodge.slug === "despacito";
+  const isNeon = isGuitar || isShip || isBat || isSkull; // the one-off neon marks stream slower
   const vars = {
     "--mk": `url(${logoSrc(lodge)})`,
     "--c": accent,
@@ -37,6 +39,14 @@ export default function LodgeTicker({ lodge }: { lodge: Lodge }) {
             variant="ticker"
             color={accent}
             className="mx-3 w-14 shrink-0 aspect-[1292/959]"
+            style={{ animationDelay: `${(i % 5) * 0.45}s` }}
+          />
+        ) : isSkull ? (
+          <SkullNeon
+            key={`${prefix}-${i}`}
+            variant="ticker"
+            color={accent}
+            className="mx-3 w-11 shrink-0 aspect-[856/964]"
             style={{ animationDelay: `${(i % 5) * 0.45}s` }}
           />
         ) : isBat ? (

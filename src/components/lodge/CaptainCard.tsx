@@ -20,7 +20,7 @@ export default function CaptainCard({
         {captain.image ? (
           <Image
             src={captain.image}
-            alt={`${captain.name} profile photo`}
+            alt=""
             width={160}
             height={160}
             className="h-full w-full object-cover object-top"
@@ -33,7 +33,9 @@ export default function CaptainCard({
       <h3 className="font-display mt-5 text-2xl text-pine-900">
         {captain.name}
       </h3>
-      <p className="mt-1.5 text-base text-charcoal/80">{captain.detail}</p>
+      {captain.detail && (
+        <p className="mt-1.5 text-base text-charcoal/80">{captain.detail}</p>
+      )}
       {hasTelegram ? (
         <a
           href={`https://t.me/${captain.telegram}`}
@@ -44,7 +46,7 @@ export default function CaptainCard({
           @{captain.telegram}
         </a>
       ) : (
-        <span className="mt-4 text-base text-charcoal/70">Telegram — TBC</span>
+        <span className="mt-4 text-base text-charcoal/80">Telegram — TBC</span>
       )}
     </div>
   );

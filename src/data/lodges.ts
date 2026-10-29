@@ -1,8 +1,8 @@
 /**
  * Lodge data, split into two cohorts:
- *   - "current" — the lodges recruiting now. Until their details drop (LODGE_REVEAL) they are
- *     forest-named placeholders built by `placeholderLodge()`; swap real data into the same
- *     objects (and drop `placeholder: true`) without touching layout.
+ *   - "current" — the lodges recruiting now (Spring 2027). A lodge whose details haven't
+ *     dropped yet is built by `placeholderLodge()` (currently just Spice); swap real data into
+ *     the same object (and drop `placeholder: true`) without touching layout.
  *   - "past"    — lodges from earlier cohorts, shown on /lodges/past at their original URLs.
  * Programme/application copy lives in the components and data/programme.ts.
  */
@@ -11,7 +11,8 @@ import { LODGE_REVEAL } from "./programme";
 
 export type Captain = {
   name: string;
-  detail: string; // faculty / year
+  /** faculty / year — omit when not known yet (CaptainCard hides the line) */
+  detail?: string;
   telegram: string; // handle without @
   image: string;
 };
@@ -46,6 +47,12 @@ export type Lodge = {
   emblem?: PlaceholderEmblem;
   /** details not released yet — cards and pages show the "details drop" treatment */
   placeholder?: boolean;
+  /** what the lodge's name stands for, e.g. "Mostly Intelligent Together" (MIT) */
+  subtitle?: string;
+  /** tentative day & time, e.g. "Tue evenings · 7–10pm" */
+  schedule?: string;
+  /** weekly topics are a draft built from the lodge's topic list (WeekList flags it) */
+  trailTentative?: boolean;
   name: string;
   tagline: string;
   /** "TBA" = placeholder lodge whose level is not announced yet */
@@ -95,6 +102,35 @@ const weeks = (topics: string[]): Week[] => [
 ];
 
 /**
+ * A draft trail from a lodge's own topic list (in the order the captains wrote it), then the
+ * programme's fixed Recess hack day + Week 10 finals. Pair with `trailTentative: true`.
+ * Fewer than 8 topics? The remaining session weeks show as one honest "To be confirmed"
+ * row rather than a silent gap or invented topics.
+ */
+const SESSION_WEEKS = 8;
+const tentativeWeeks = (topics: string[]): Week[] => {
+  const n = topics.length;
+  const rest =
+    n >= SESSION_WEEKS
+      ? []
+      : [{ label: n + 1 === SESSION_WEEKS ? `Week ${SESSION_WEEKS}` : `Weeks ${n + 1}–${SESSION_WEEKS}`, topic: "To be confirmed" }];
+  return [
+    ...topics.map((t, i) => ({ label: `Week ${i + 1}`, topic: t })),
+    ...rest,
+    { label: "Recess", topic: "Lodge hack day" },
+    { label: "Week 10", topic: "Hackathon finals & project exhibition" },
+  ];
+};
+
+/** A captain: name + photo, plus faculty/year and Telegram once known ("tbc" until then). */
+const cap = (name: string, image: string, detail?: string, telegram = "tbc"): Captain => ({
+  name,
+  detail,
+  telegram,
+  image: `/captains/${image}.jpg`,
+});
+
+/**
  * A default lodge for the new cohort, shown until its real details drop. `accent` is the dark
  * tone (legible as text on cream); `glow` is its light partner (legible on the pine hero/cards).
  */
@@ -105,19 +141,25 @@ const placeholderLodge = ({
   glow,
   ambient,
   emblem,
+  logo,
+  captains,
 }: {
   slug: string;
   name: string;
   accent: string;
   glow: string;
   ambient: AmbientKind;
-  emblem: PlaceholderEmblem;
+  emblem?: PlaceholderEmblem;
+  logo?: string;
+  /** known captains so far; the rest of the 3 seats show as TBA */
+  captains?: Captain[];
 }): Lodge => ({
   slug,
   name,
   cohort: "current",
   placeholder: true,
   emblem,
+  logo,
   tagline: `Details drop ${LODGE_REVEAL}.`,
   level: "TBA",
   forWho: `${name}'s focus, captains and weekly trail are being finalised. Full details drop ${LODGE_REVEAL} — check back to see if it's the lodge for you.`,
@@ -128,12 +170,15 @@ const placeholderLodge = ({
     "Lodge hack day",
     "Hackathon finals & project exhibition",
   ],
-  captains: Array.from({ length: 3 }, () => ({
-    name: "Captain TBA",
-    detail: `Revealed ${LODGE_REVEAL}`,
-    telegram: "tbc",
-    image: "",
-  })),
+  captains: [
+    ...(captains ?? []),
+    ...Array.from({ length: Math.max(0, 3 - (captains?.length ?? 0)) }, () => ({
+      name: "Captain TBA",
+      detail: `Revealed ${LODGE_REVEAL}`,
+      telegram: "tbc",
+      image: "",
+    })),
+  ],
   weeks: [
     ...Array.from({ length: 7 }, (_, i) => ({ label: `Week ${i + 1}`, topic: "To be announced" })),
     { label: "Recess", topic: "Lodge hack day" },
@@ -144,18 +189,282 @@ const placeholderLodge = ({
   neonColor: glow,
 });
 
-/** The new cohort's lodges — placeholders until LODGE_REVEAL. */
+/** The new cohort's lodges (Spring 2027). Copy comes from each lodge's own brief; topics and
+ *  schedules are tentative until the captains finalise them. */
+const MIT_TOPICS = [
+  "LLM integration",
+  "AI orchestration",
+  "Tool calling",
+  "Memory",
+  "Retrieval-Augmented Generation (RAG)",
+  "Multi-step agent workflows",
+  "Agentic RAG",
+  "Basic multi-agent systems",
+];
+const PANDAI_TOPICS = ["LLM fundamentals", "RAG", "AI agents", "LLM safety", "Vibe coding"];
+const HAWKINS_TOPICS = [
+  "How multimodal models interpret input",
+  "Image recognition & describing photos",
+  "Transcribing & summarising audio",
+  "AI-generated images, music & video",
+  "Prompting across formats",
+  "Combining modalities into one workflow",
+  "Limits & risks: hallucinations, bias, deepfakes",
+];
+const BRYAN_TOPICS = [
+  "LLMs & prompt engineering",
+  "Computer vision",
+  "Recommender systems",
+  "Vibe coding",
+  "Self-improving agents",
+  "Testing & improving what you build",
+];
+const IDW_TOPICS = [
+  "How LLMs actually work",
+  "Prompt engineering",
+  "Image generation with diffusion models",
+  "Giving AI memory with RAG",
+  "Vibe coding",
+  "Autonomous AI agents",
+];
+const SUPERPOWER_TOPICS = [
+  "BM25 / keyword vs. semantic search",
+  "Retrieval-Augmented Generation (RAG)",
+  "Multimodal search",
+  "AI agents that browse the web",
+  "Measuring search quality",
+];
+const DESPACITO_TOPICS = [
+  "Machine learning",
+  "Computer vision",
+  "Interactive games",
+  "Creative coding",
+  "Vibe coding",
+  "Finding limits & improving your experiments",
+];
+const BOLIAO_TOPICS = [
+  "Core LLM & agent concepts",
+  "Scoping agents",
+  "Designing guardrails",
+  "Multi-agent systems",
+  "Connecting agents to real databases",
+  "Advanced RAG (GraphRAG)",
+  "Latest AI tools, frameworks & trends",
+];
+
 const CURRENT_LODGES: Lodge[] = [
-  placeholderLodge({ slug: "hemlock", name: "Hemlock Lodge", accent: "#3E6B48", glow: "#8FD19E", ambient: "pointed", emblem: "pine" }),
-  placeholderLodge({ slug: "cedar", name: "Cedar Lodge", accent: "#A35A42", glow: "#F0A07E", ambient: "maple", emblem: "campfire" }),
-  placeholderLodge({ slug: "birch", name: "Birch Lodge", accent: "#6E7A3C", glow: "#D2DC8A", ambient: "oval", emblem: "lantern" }),
-  placeholderLodge({ slug: "juniper", name: "Juniper Lodge", accent: "#3A6E8F", glow: "#8CC8EC", ambient: "teardrop", emblem: "compass" }),
-  placeholderLodge({ slug: "spruce", name: "Spruce Lodge", accent: "#0D6F62", glow: "#5EBAAB", ambient: "lance", emblem: "pine" }),
-  placeholderLodge({ slug: "willow", name: "Willow Lodge", accent: "#8A5C36", glow: "#E2B07E", ambient: "round", emblem: "axe" }),
-  placeholderLodge({ slug: "aspen", name: "Aspen Lodge", accent: "#9A6B1F", glow: "#FFCF87", ambient: "heart", emblem: "lantern" }),
-  placeholderLodge({ slug: "larch", name: "Larch Lodge", accent: "#B5653A", glow: "#FFB24D", ambient: "maple", emblem: "campfire" }),
-  placeholderLodge({ slug: "rowan", name: "Rowan Lodge", accent: "#A33B3B", glow: "#FF8A7A", ambient: "round", emblem: "compass" }),
-  placeholderLodge({ slug: "alder", name: "Alder Lodge", accent: "#4F6B7A", glow: "#A9C6D6", ambient: "oval", emblem: "axe" }),
+  {
+    slug: "mit",
+    cohort: "current",
+    logo: "/logos/mit.png",
+    name: "MIT Lodge",
+    subtitle: "Mostly Intelligent Together",
+    tagline: "Building AI agents that plan, remember and act.",
+    level: "TBA",
+    forWho:
+      "Anyone who wants to go beyond chatbots and build intelligent AI agents that call tools, remember and retrieve.",
+    forWhoCard: "For builders who want AI agents that plan, use tools and remember.",
+    why: "Our lodge focuses on building intelligent AI agents through LLM integration, AI orchestration, tool calling, memory and Retrieval-Augmented Generation (RAG). Building on these foundations, you'll explore multi-step agent workflows, Agentic RAG and basic multi-agent systems through a balance of theory and hands-on projects.",
+    topics: MIT_TOPICS,
+    cardTags: ["Agentic AI", "Tool Calling", "Agentic RAG"],
+    captains: [
+      cap("Sanjana", "sanjana-2", "SCIS (IS) / Year 2", "Sanjana270306"),
+      cap("Chitanya", "chitanya", "SCIS (IS) / Year 2", "Chitanya_Bharathi"),
+      cap("Janani", "janani", "SCIS (IS) / Year 2", "JJanani88"),
+    ],
+    weeks: tentativeWeeks(MIT_TOPICS),
+    trailTentative: true,
+    schedule: "Tue or Wed evenings · 7–10pm",
+    ambient: "lance",
+    accent: "#1E3A6E", // MIT navy
+    neonColor: "#8FB4FF",
+  },
+  {
+    slug: "pandai",
+    cohort: "current",
+    logo: "/logos/pandai.png",
+    name: "PandAI Lodge",
+    tagline: "Build a real intuition for how AI works — then put it to work in your field.",
+    level: "Beginner",
+    forWho:
+      "Beginners. We want you to develop an intuition for how AI works — and how to ultimately apply it in your own specialised field.",
+    forWhoCard: "For beginners who want to understand AI and apply it to their own field.",
+    why: "Starting from LLM fundamentals, we build up through RAG, agents and LLM safety to vibe coding — so you leave with a genuine intuition for how AI works, and how to apply it in whatever field you're in.",
+    topics: PANDAI_TOPICS,
+    cardTags: ["LLM Fundamentals", "RAG & Agents", "Vibe Coding"],
+    captains: [
+      cap("Emily", "emily", "CIS / Year 1", "homesickpencil"),
+      cap("Jun Han", "jun-han", "SCIS (IS) / Year 2", "junnhann"),
+      cap("Xing You", "xing-you", "SCIS (IS) / Year 1", "xingthexing"),
+    ],
+    weeks: tentativeWeeks(PANDAI_TOPICS),
+    trailTentative: true,
+    schedule: "Tue evenings · 7–10pm",
+    ambient: "round",
+    accent: "#2B3A33", // panda ink (kept black-and-white — the green panda read as scary)
+    neonColor: "#F4EEE0", // paper white: the mark looks like a real panda on dark grounds
+  },
+  {
+    slug: "hawkins",
+    cohort: "current",
+    logo: "/logos/hawkins.png",
+    name: "HawKins Lab",
+    tagline: "AI that can see, hear, read and create.",
+    level: "Beginner",
+    forWho: "Beginner-friendly. No coding background needed — only curiosity!",
+    forWhoCard: "Beginner-friendly: no coding background needed, only curiosity.",
+    why: "Our lodge focuses on understanding and using AI that can see, hear, read and create across text, images, audio and video. You'll explore how multimodal models interpret different types of input — from image recognition and describing photos to transcribing and summarising audio — then move into AI-generated images, music and video, prompting across formats, and combining modalities into one workflow. We'll also cover the limits and risks, including hallucinations, bias in image generation and deepfakes, so you learn to use these tools responsibly.",
+    topics: HAWKINS_TOPICS,
+    cardTags: ["Multimodal AI", "Image & Audio", "Generative Media"],
+    captains: [
+      cap("Kaavya", "kaavya", "SCIS (IS) / Year 2", "kkaavya"),
+      cap("Hari", "hari", "SCIS (IS) / Year 2", "harianagrandekutty"),
+      cap("Marilyn", "marilyn", "MIM", "llama_louie"),
+    ],
+    weeks: tentativeWeeks(HAWKINS_TOPICS),
+    trailTentative: true,
+    schedule: "Tue evenings · 7–10pm",
+    ambient: "oval",
+    accent: "#9B1C1C", // Upside-Down crimson
+    neonColor: "#FF4D4D",
+  },
+  {
+    slug: "bryan",
+    cohort: "current",
+    logo: "/logos/bryan.png",
+    name: "BRYan Lodge",
+    tagline: "Everyday applied AI — leave with a working tool every week.",
+    level: "Beginner",
+    forWho:
+      "Beginner-friendly, across all schools — anyone interested in creating tools and workflows that help with their daily or school life.",
+    forWhoCard: "For anyone who wants to build AI tools for daily and school life.",
+    why: "Our lodge teaches beginners to understand and build the AI they use in daily and school life. We prioritise practical lab sessions so you leave with a working tool every week — covering LLMs and prompt engineering, computer vision, recommender systems, vibe coding and self-improving agents. Throughout the 10 weeks, you'll also learn to test and improve what you build.",
+    topics: BRYAN_TOPICS,
+    cardTags: ["Applied AI", "Computer Vision", "Vibe Coding"],
+    captains: [
+      cap("Yu Hui", "yu-hui-3", "SCIS (IS) / Year 1", "why_u_hui"),
+      cap("Ryan", "ryan-3", "SCIS (IS) / Year 1", "rnonsense"),
+      { name: "Brod", detail: "SCIS (IS) / Year 2", telegram: "Adamsandler256", image: "/captains/brod-2.jpg" },
+    ],
+    weeks: tentativeWeeks(BRYAN_TOPICS),
+    trailTentative: true,
+    schedule: "Thu evenings · 7–10pm",
+    ambient: "teardrop",
+    accent: "#5B4A8B", // night-sky violet (the cat's starry badge)
+    neonColor: "#DCD3FF",
+  },
+  {
+    slug: "idw",
+    cohort: "current",
+    logo: "/logos/idw.png",
+    name: "IDW Lodge",
+    subtitle: "I Do Want",
+    tagline: "The AI everyone talks about — finally explained, without the heavy maths.",
+    level: "Beginner",
+    forWho: "Absolute beginners who are genuinely clueless about AI.",
+    forWhoCard: "For absolute beginners — clear AI, no heavy maths.",
+    why: "Our lodge breaks down the AI concepts everyone talks about but few actually understand: how LLMs actually work, prompt engineering, image generation with diffusion models, giving AI memory with RAG, vibe coding and autonomous AI agents. Every week includes plenty of hands-on time, where you put what you've just learned into practice on your project.",
+    topics: IDW_TOPICS,
+    cardTags: ["LLMs Explained", "Diffusion Models", "AI Agents"],
+    captains: [
+      cap("Isaac", "isaac", "SCIS (IS) / Year 1", "isaactham"),
+      cap("Dheekshitha", "dheekshitha", "SCIS (IS) / Year 1", "dheefvl"),
+      cap("Wei Yang", "wei-yang-3", "SCIS (IS) / Year 1", "weiyang17"),
+    ],
+    weeks: tentativeWeeks(IDW_TOPICS),
+    trailTentative: true,
+    schedule: "Thu evenings · 7–10pm",
+    ambient: "maple",
+    accent: "#9A4A12", // sun orange (darkened for text contrast)
+    neonColor: "#FFC46B",
+  },
+  {
+    slug: "superpower",
+    cohort: "current",
+    logo: "/logos/superpower.png",
+    name: "Superpower Lodge",
+    tagline: "Build AI-powered search engines that retrieve, understand and act.",
+    level: "Beginner–Intermediate",
+    forWho:
+      "Lodgers with basic to intermediate experience who want to build AI-powered search engines.",
+    forWhoCard: "For basic-to-intermediate builders who want to make AI search tools.",
+    why: "Explore BM25 / keyword vs. semantic search, RAG, multimodal search and AI agents that browse the web. By the end of term, you'll know how to implement AI search tools you can integrate into your own projects — and how to measure search quality.",
+    topics: SUPERPOWER_TOPICS,
+    cardTags: ["AI Search", "Semantic Search", "RAG"],
+    captains: [
+      cap("Raeann", "raeann", "SCIS (IS) / Year 1", "raeelim"),
+      cap("Wei Kai", "wei-kai", "SCIS (IS) / Year 1", "wa_kii"),
+      cap("Philbert", "philbert", "SCIS (IS) / Year 2", "wantonwarlord"),
+      { name: "Shahad", detail: "SOB / Year 5", telegram: "SMKxx1", image: "/captains/shahad-2.jpg" },
+    ],
+    weeks: tentativeWeeks(SUPERPOWER_TOPICS),
+    trailTentative: true,
+    schedule: "Tue evenings · 7–9.30pm",
+    ambient: "pointed",
+    accent: "#1F4FA0", // Superman blue
+    neonColor: "#FFD23F", // shield yellow
+  },
+  {
+    slug: "despacito",
+    cohort: "current",
+    logo: "/logos/despacito.png",
+    name: "Despacito Lodge",
+    tagline: "Experimental AI & creative computing — learn by building, testing and challenging it.",
+    level: "Beginner",
+    forWho: "Beginners from all schools — no prior coding or AI experience required.",
+    forWhoCard: "For beginners from any school — no coding or AI experience needed.",
+    why: "Our lodge takes a playful, experiment-driven approach: you'll discover how intelligent systems work by building, testing and challenging them. Through hands-on projects in machine learning, computer vision, interactive games and creative coding, you'll explore how AI learns, makes decisions and responds to different inputs — then use beginner-friendly tools and vibe coding to create your own AI-powered experiments, find their limits and keep improving them. Over 10 weeks, we aim to make AI accessible, engaging and fun through curiosity, creativity and experimentation!",
+    topics: DESPACITO_TOPICS,
+    cardTags: ["Creative Coding", "Computer Vision", "Interactive Games"],
+    captains: [
+      cap("Clayton", "clayton", "SCIS (IS) / Year 1", "haid1lau"),
+      cap("Elton", "elton", "SCIS (IS) / Year 1", "elt_nn"),
+      cap("Dikshaa", "dikshaa", "SCIS (IS) / Year 2", "shaa_rukhan"),
+      { name: "Makendra", detail: "SCIS (IS) / Year 2", telegram: "chaneldebleu", image: "/captains/makendra-4.jpg" },
+    ],
+    weeks: tentativeWeeks(DESPACITO_TOPICS),
+    trailTentative: true,
+    schedule: "Tue or Thu evenings · 7–10pm",
+    ambient: "heart",
+    accent: "#B0246E", // deep neon pink (legible on cream)
+    neonColor: "#FF4FA3", // the sugar skull's pink tube (cyan 2nd tube lives in SkullNeon)
+  },
+  {
+    slug: "boliao",
+    cohort: "current",
+    logo: "/logos/boliao.png",
+    name: "Boliao Lodge",
+    tagline: "A build-focused lodge for AI agents and AI engineering.",
+    level: "Intermediate",
+    forWho:
+      "Intermediate students. No programming background required, but you should have some prior experience building projects.",
+    forWhoCard: "For builders with some project experience — no programming background needed.",
+    why: "From core LLM and agent concepts to hands-on development: learn to scope agents, design guardrails, build multi-agent systems, connect agents to real databases and implement advanced RAG techniques such as GraphRAG — while staying current with the latest AI tools, frameworks and industry trends.",
+    topics: BOLIAO_TOPICS,
+    cardTags: ["AI Agents", "Multi-Agent Systems", "GraphRAG"],
+    captains: [
+      { name: "Yash", detail: "SCIS (CS) / Year 2", telegram: "Yash_annem", image: "/captains/yash-2.jpg" },
+      cap("Shaun", "shaun", "SCIS (IS) / Year 2", "shaunpan"),
+      { name: "Sonya", detail: "SCIS (IS) / Year 2", telegram: "sooony_a", image: "/captains/sonya-2.jpg" },
+    ],
+    weeks: tentativeWeeks(BOLIAO_TOPICS),
+    trailTentative: true,
+    schedule: "Tue evenings · 7–10pm",
+    ambient: "round",
+    accent: "#8A6410", // duckling ochre
+    neonColor: "#FFD966",
+  },
+  placeholderLodge({
+    slug: "spice",
+    name: "Spice Lodge",
+    logo: "/logos/spice.png",
+    accent: "#B23A2A", // chilli red
+    glow: "#FF6B4A",
+    ambient: "teardrop",
+    captains: [
+      { name: "Gabriel", detail: "MITB / Year 2", telegram: "GMSidik", image: "/captains/gabriel-2.jpg" },
+    ],
+  }),
 ];
 
 /** The lodges from earlier cohorts — kept intact, served at their original URLs. */
@@ -551,17 +860,7 @@ const PAST_LODGES: Lodge[] = [
   },
 ];
 
-/** Every topic tag the previous lodges ran, de-duplicated — the pool placeholder cards draw from. */
-const TAG_POOL = [...new Set(PAST_LODGES.flatMap((l) => l.cardTags ?? l.topics.slice(0, 3)))];
-
-/** Until their details drop, placeholder lodges show 3 tags sampled from what past lodges
- *  covered. Deterministic (stride 7 through the pool) so server and client render alike;
- *  a lodge's own `cardTags` always wins once its real data lands. */
-export const currentLodges: Lodge[] = CURRENT_LODGES.map((l, i) =>
-  l.placeholder && !l.cardTags
-    ? { ...l, cardTags: [0, 1, 2].map((k) => TAG_POOL[((i * 3 + k) * 7) % TAG_POOL.length]) }
-    : l
-);
+export const currentLodges = CURRENT_LODGES;
 export const pastLodges = PAST_LODGES;
 export const lodges: Lodge[] = [...currentLodges, ...PAST_LODGES];
 

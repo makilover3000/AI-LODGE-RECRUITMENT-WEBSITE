@@ -77,3 +77,19 @@ public/entry/*.png
 # markdown notes — keep local only, do not track (README.md stays tracked)
 *.md
 !README.md
+
+# all source images stay local (raw photos, logo art, screenshots, exports);
+# only the optimised files under public/ are committed, because the site serves them
+*.png
+*.PNG
+*.jpg
+*.JPG
+*.jpeg
+*.JPEG
+*.webp
+*.heic
+*.HEIC
+*.gif
+*.avif
+/lodge photos/
+!/public/**

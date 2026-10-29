@@ -6,6 +6,12 @@ import LodgeMark from "./LodgeMark";
 import GuitarNeon from "./GuitarNeon";
 import ShipNeon from "./ShipNeon";
 import BatNeon from "./BatNeon";
+import DespacitoShowpiece from "./DespacitoShowpiece";
+import BryanShowpiece from "./BryanShowpiece";
+import PandaShowpiece from "./PandaShowpiece";
+
+/** lodges whose hero emblem is a full layered showpiece (no faint watermark, tighter bottom) */
+const SHOWPIECES = new Set(["despacito", "bryan", "pandai"]);
 
 /** Pick a legible text colour (pine-900 or cream-50) for a given accent background. */
 function readableOn(hex: string) {
@@ -40,16 +46,25 @@ export default function LodgeHero({ lodge }: { lodge: Lodge }) {
 
       {/* the same logo, blown up and faint, bleeding off the right edge — reads the
           shape a second time at a different scale, giving the hero real depth */}
-      <LodgeMark
-        variant="watermark"
-        src={logoSrc(lodge)}
-        color={accent}
-        className="pointer-events-none absolute -right-[10%] top-1/2 h-[150%] w-[68%] -translate-y-1/2 opacity-[0.12] sm:opacity-[0.14]"
-      />
+      {/* (showpiece lodges skip it: their emblem brings its own backdrop) */}
+      {!SHOWPIECES.has(lodge.slug) && (
+        <LodgeMark
+          variant="watermark"
+          src={logoSrc(lodge)}
+          color={accent}
+          className="pointer-events-none absolute -right-[10%] top-1/2 h-[150%] w-[68%] -translate-y-1/2 opacity-[0.12] sm:opacity-[0.14]"
+        />
+      )}
       {/* scrim: keep the left text column clean over the watermark */}
       <div className="absolute inset-0 bg-gradient-to-r from-pine-900/85 via-pine-900/35 to-transparent" />
 
-      <div className="relative mx-auto max-w-6xl px-5 py-12 sm:px-8 sm:py-28">
+      {/* a showpiece fills the band itself, so a tighter bottom lets its belt sit closer
+          (still clear of the art) */}
+      <div
+        className={`relative mx-auto max-w-6xl px-5 pt-12 sm:px-8 sm:pt-28 ${
+          SHOWPIECES.has(lodge.slug) ? "pb-6 sm:pb-10" : "pb-12 sm:pb-28"
+        }`}
+      >
         <Link
           href={past ? "/lodges/past" : "/#lodges"}
           className="eyebrow inline-flex items-center gap-2 text-cream-50/70 transition-colors hover:text-glow"
@@ -67,7 +82,13 @@ export default function LodgeHero({ lodge }: { lodge: Lodge }) {
               className={BADGE}
               style={{ background: lodge.accent, color: readableOn(lodge.accent) }}
             >
-              {lodge.level}
+              {/* this cohort shows no difficulty: anyone can join */}
+              {past ? lodge.level : "Open to all"}
+            </span>
+          )}
+          {lodge.schedule && (
+            <span className={`${BADGE} gap-2 border border-cream-50/30 bg-cream-50/10 text-cream-50`}>
+              <span aria-hidden style={{ color: accent }}>●</span> {lodge.schedule} · tentative
             </span>
           )}
           {past && (
@@ -87,8 +108,11 @@ export default function LodgeHero({ lodge }: { lodge: Lodge }) {
               "CURIOSITYMAXXER" reads in front of the neon sign, never behind it */}
           <div className="relative z-10 min-w-0">
             <h1 className="font-display mt-4 text-display text-cream-50">{lodge.name}</h1>
+            {lodge.subtitle && (
+              <p className="eyebrow mt-2 text-cream-50/75">&ldquo;{lodge.subtitle}&rdquo;</p>
+            )}
             <p
-              className="font-script mt-1 text-3xl sm:text-4xl"
+              className="font-script mt-1 max-w-[22ch] text-balance text-3xl sm:max-w-[26ch] sm:text-4xl"
               style={{ color: accent }}
             >
               {lodge.tagline}
@@ -113,6 +137,15 @@ export default function LodgeHero({ lodge }: { lodge: Lodge }) {
                    phones and never overflows the content column (checked at 320px) */
                 className="w-[clamp(200px,74vw,440px)] aspect-[1080/559]"
               />
+            ) : lodge.slug === "despacito" ? (
+              /* the lodge's poster as a living retro sunset — sized by HEIGHT (portrait art) */
+              <DespacitoShowpiece className="mt-10 h-[clamp(320px,38vw,500px)] aspect-[663/845] lg:mt-0" />
+            ) : lodge.slug === "bryan" ? (
+              /* the night badge — wide-ish art, sized by height to hold the same band */
+              <BryanShowpiece className="mt-6 h-[clamp(300px,36vw,490px)] aspect-[900/839] lg:mt-0" />
+            ) : lodge.slug === "pandai" ? (
+              /* just the panda — portrait art, sized by height like Despacito */
+              <PandaShowpiece className="mt-8 h-[clamp(310px,36vw,480px)] aspect-[1053/1290] lg:mt-0" />
             ) : lodge.slug === "curiositymaxxer" ? (
               <ShipNeon
                 variant="emblem"

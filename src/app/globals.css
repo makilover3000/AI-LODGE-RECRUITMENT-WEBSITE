@@ -710,6 +710,359 @@ body {
   animation-play-state: paused !important;
 }
 
+/* ============================================================
+   Neon sugar skull — Despacito Lodge's one-off showpiece (components/lodge/SkullNeon.tsx).
+   Sibling of the guitar/ship/bat blocks, but TWO-TONE like its source sign: each tube
+   group sets `--t` — the pink run (skull, sockets, heart, teeth) uses `--c`, the cyan run
+   (flower, eyes, cheek curls) uses `--c2`. Centreline tubes are sparse, so it can take a
+   slightly fuller bloom than the bat. Only OPACITY animates — the filter is STATIC.
+   ============================================================ */
+/* No `position` here on purpose (see the guitar/ship/mini notes). */
+.ail-skull {
+  display: block;
+}
+.ail-skull-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible; /* let the glow bleed past the viewBox instead of clipping */
+}
+.ail-skull path {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+.ail-skull-pink {
+  --t: var(--c);
+}
+.ail-skull-cyan {
+  --t: var(--c2);
+}
+.ail-skull-halo,
+.ail-skull-tube {
+  stroke: var(--t);
+}
+.ail-skull-unlit {
+  stroke: color-mix(in srgb, var(--t) 24%, #08060c);
+}
+.ail-skull-core {
+  stroke: #fff8f4;
+}
+@keyframes ail-skull-breathe {
+  0%,
+  100% {
+    opacity: 0.92;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* EMBLEM — the hero showpiece: floats, ignites (flicker) on load, then breathes. */
+.ail-skull-emblem {
+  animation: ail-float 7s ease-in-out infinite;
+}
+.ail-skull-emblem .ail-skull-halo {
+  stroke-width: 4;
+  opacity: 0.85;
+  filter: drop-shadow(0 0 2px var(--t)) drop-shadow(0 0 7px var(--t))
+    drop-shadow(0 0 16px var(--t));
+  animation: ail-skull-breathe 3.8s ease-in-out 1.25s infinite;
+}
+.ail-skull-emblem .ail-skull-unlit {
+  stroke-width: 6;
+  opacity: 0.32;
+}
+.ail-skull-emblem .ail-skull-tube {
+  stroke-width: 3.6;
+}
+.ail-skull-emblem .ail-skull-core {
+  stroke-width: 1.5;
+  opacity: 1;
+}
+.ail-skull-emblem .ail-skull-lit {
+  animation: ail-neon-on 1.25s steps(1, end) both;
+}
+
+/* MINI — the card chip: crisp, gentle static glow, re-ignites on card hover. */
+.ail-skull-mini .ail-skull-halo {
+  stroke-width: 2.6;
+  opacity: 0.8;
+  filter: drop-shadow(0 0 2px var(--t)) drop-shadow(0 0 6px var(--t));
+}
+.ail-skull-mini .ail-skull-unlit {
+  stroke-width: 3.4;
+  opacity: 0.42;
+}
+.ail-skull-mini .ail-skull-tube {
+  stroke-width: 2;
+}
+.ail-skull-mini .ail-skull-core {
+  stroke-width: 0.8;
+  opacity: 0.95;
+}
+.group:hover .ail-skull-mini .ail-skull-lit {
+  animation: ail-neon-on 1.1s steps(1, end) both;
+}
+
+/* TICKER — the tiny streaming mark: thin tubes + gentle glow + shimmer. */
+.ail-skull-ticker {
+  animation: ail-shimmer 2.6s ease-in-out infinite;
+}
+.ail-skull-ticker .ail-skull-halo {
+  stroke-width: 1.8;
+  opacity: 0.75;
+  filter: drop-shadow(0 0 2px var(--t)) drop-shadow(0 0 4px var(--t));
+}
+.ail-skull-ticker .ail-skull-unlit {
+  display: none;
+}
+.ail-skull-ticker .ail-skull-tube {
+  stroke-width: 1.3;
+}
+.ail-skull-ticker .ail-skull-core {
+  stroke-width: 0.5;
+  opacity: 0.9;
+}
+
+/* ============================================================
+   Despacito showpiece — the lodge's Día de los Muertos poster as a living retro sunset
+   (components/lodge/DespacitoShowpiece.tsx). Hero emblem only; the ticker + card keep the
+   neon skull. Layers are absolutely stacked; the JS only nudges each layer's translate for
+   pointer parallax. Every loop here animates transform/opacity only, and the global
+   reduced-motion rule freezes them.
+   ============================================================ */
+/* shared showpiece base (Despacito / BRYan / PandAI heroes) */
+.ail-show {
+  position: relative; /* always placed in normal flow (the hero's emblem column) */
+  display: block;
+  container-type: size; /* particles fall/rise in cqh = the emblem's own height */
+}
+.ail-show-layer {
+  position: absolute;
+  inset: 0;
+}
+.ail-desp-rays,
+.ail-desp-sun,
+.ail-desp-glow {
+  position: absolute;
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  border-radius: 9999px;
+}
+/* marigold sunburst: 24 soft rays, faded out radially, turning once every 2 minutes */
+.ail-desp-rays {
+  background: repeating-conic-gradient(
+    from 0deg,
+    rgba(255, 186, 73, 0.2) 0deg 5deg,
+    transparent 5deg 15deg
+  );
+  -webkit-mask: radial-gradient(closest-side, #000 22%, transparent 100%);
+  mask: radial-gradient(closest-side, #000 22%, transparent 100%);
+  animation: ail-desp-spin 120s linear infinite;
+}
+/* the coral sun, with classic sunset bands cut into its lower half */
+.ail-desp-sun {
+  background: radial-gradient(circle at 46% 38%, #f6ab86 0%, #e2876c 48%, #c4614a 100%);
+  -webkit-mask: linear-gradient(
+    #000 0 56%,
+    transparent 56% 60%,
+    #000 60% 68%,
+    transparent 68% 72.5%,
+    #000 72.5% 79%,
+    transparent 79% 84.5%,
+    #000 84.5% 89%,
+    transparent 89%
+  );
+  mask: linear-gradient(
+    #000 0 56%,
+    transparent 56% 60%,
+    #000 60% 68%,
+    transparent 68% 72.5%,
+    #000 72.5% 79%,
+    transparent 79% 84.5%,
+    #000 84.5% 89%,
+    transparent 89%
+  );
+}
+/* warm bloom behind the sun — a static gradient; only its opacity breathes */
+.ail-desp-glow {
+  background: radial-gradient(closest-side, rgba(255, 150, 105, 0.55), rgba(255, 150, 105, 0) 100%);
+  scale: 1.45;
+  animation: ail-desp-breathe 6s ease-in-out infinite;
+}
+.ail-show-figure {
+  position: absolute;
+  inset: 0;
+  animation: ail-float 7s ease-in-out infinite;
+  filter: drop-shadow(0 18px 26px rgba(0, 0, 0, 0.45));
+}
+/* ---- shared particles (components/lodge/showpiece/Particles.tsx) ---- */
+.ail-pt {
+  position: absolute;
+  opacity: 0;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+/* petals: fall through the emblem, sway sideways, tumble, fade in/out */
+.ail-pt-petal {
+  top: -6%;
+  border-radius: 70% 0 70% 0;
+  animation-name: ail-desp-fall;
+}
+.ail-pt-petal-0 {
+  background: #ffb52e;
+}
+.ail-pt-petal-1 {
+  background: #ff9b1f;
+}
+.ail-pt-petal-2 {
+  background: #f6c75a;
+}
+/* leaves: slim, drift down more gently than petals (reuses the fall path) */
+.ail-pt-leaf {
+  top: -8%;
+  border-radius: 100% 0 100% 0;
+  animation-name: ail-desp-fall;
+}
+.ail-pt-leaf-0 {
+  background: rgba(243, 235, 216, 0.85);
+}
+.ail-pt-leaf-1 {
+  background: rgba(232, 205, 150, 0.85);
+}
+/* fireflies: rise from the bottom, wander, blink */
+.ail-pt-firefly {
+  bottom: 4%;
+  border-radius: 9999px;
+  animation-name: ail-firefly-rise;
+}
+.ail-pt-firefly-0 {
+  background: #ffd27a;
+  box-shadow: 0 0 6px 2px rgba(255, 196, 92, 0.75);
+}
+.ail-pt-firefly-1 {
+  background: #fff1c2;
+  box-shadow: 0 0 5px 2px rgba(255, 220, 140, 0.6);
+}
+@keyframes ail-firefly-rise {
+  0% {
+    transform: translate3d(0, 0, 0);
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  40% {
+    transform: translate3d(var(--drift), -32cqh, 0);
+    opacity: 0.35;
+  }
+  60% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate3d(calc(var(--drift) * -0.6), -78cqh, 0);
+    opacity: 0;
+  }
+}
+
+/* ---- BRYan: night badge ---- */
+.ail-bryan-sky {
+  inset: -14%; /* the night reaches past the badge */
+}
+.ail-bryan-star {
+  position: absolute;
+  border-radius: 9999px;
+  background: #fff4d6;
+  box-shadow: 0 0 4px 1px rgba(255, 236, 190, 0.55);
+  animation: ail-twinkle 3s ease-in-out infinite;
+}
+@keyframes ail-twinkle {
+  0%,
+  100% {
+    opacity: 0.15;
+  }
+  50% {
+    opacity: 0.9;
+  }
+}
+.ail-bryan-halo {
+  position: absolute;
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  border-radius: 9999px;
+  background: radial-gradient(closest-side, rgba(255, 186, 84, 0.6), rgba(255, 186, 84, 0.18) 62%, rgba(255, 186, 84, 0) 100%);
+  scale: 1.5;
+  animation: ail-desp-breathe 5s ease-in-out infinite;
+}
+
+/* ---- PandAI: bamboo moon (warm moonlight tones — never green) ---- */
+.ail-panda-stalk {
+  position: absolute;
+  bottom: -4%;
+  width: auto;
+  aspect-ratio: 80 / 400;
+  color: rgba(243, 228, 190, 0.2);
+  transform-origin: 50% 100%;
+  animation: ail-sway-stalk 7s ease-in-out infinite;
+}
+@keyframes ail-sway-stalk {
+  0%,
+  100% {
+    rotate: -1.6deg;
+  }
+  50% {
+    rotate: 1.6deg;
+  }
+}
+.ail-panda-glow {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 100%;
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  border-radius: 9999px;
+  background: radial-gradient(closest-side, rgba(255, 240, 205, 0.38), rgba(255, 240, 205, 0) 100%);
+  scale: 1.3;
+  animation: ail-desp-breathe 6s ease-in-out infinite;
+}
+
+@keyframes ail-desp-spin {
+  to {
+    rotate: 360deg;
+  }
+}
+@keyframes ail-desp-breathe {
+  0%,
+  100% {
+    opacity: 0.95;
+  }
+  50% {
+    opacity: 0.55;
+  }
+}
+@keyframes ail-desp-fall {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.95;
+  }
+  50% {
+    transform: translate3d(var(--drift), 55cqh, 0) rotate(calc(var(--spin) * 0.5));
+  }
+  85% {
+    opacity: 0.85;
+  }
+  100% {
+    transform: translate3d(calc(var(--drift) * -0.4), 110cqh, 0) rotate(var(--spin));
+    opacity: 0;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

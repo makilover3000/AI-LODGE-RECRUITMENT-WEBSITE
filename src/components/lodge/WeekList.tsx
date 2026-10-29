@@ -21,7 +21,9 @@ export default function WeekList({ lodge }: { lodge: Lodge }) {
           className={`mt-8 grid gap-5 ${
             captainCount === 2
               ? "mx-auto max-w-2xl sm:grid-cols-2"
-              : "sm:grid-cols-3"
+              : captainCount === 4
+                ? "sm:grid-cols-2 lg:grid-cols-4"
+                : "sm:grid-cols-3"
           }`}
         >
           {lodge.captains.map((c, i) => (
@@ -37,9 +39,20 @@ export default function WeekList({ lodge }: { lodge: Lodge }) {
         {/* weekly trail */}
         <div className="mt-16">
           <p className="eyebrow text-roof-dark">Week by week</p>
-          <h2 className="font-display mt-3 text-h2 text-pine-900">
-            The route through the woods
-          </h2>
+          <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2">
+            <h2 className="font-display text-h2 text-pine-900">The route through the woods</h2>
+            {lodge.trailTentative && (
+              <span className="rounded-full border-2 border-dashed border-roof/45 px-3 py-1 text-xs font-bold uppercase tracking-[0.14em] text-roof-dark">
+                Tentative · may change
+              </span>
+            )}
+          </div>
+          {lodge.schedule && (
+            <p className="mt-3 inline-flex items-center gap-2 text-base font-semibold text-pine-900">
+              <span aria-hidden className="inline-block h-2 w-2 rounded-full" style={{ background: lodge.accent }} />
+              {lodge.schedule}
+            </p>
+          )}
           {lodge.sessionLength && (
             <p className="mt-2 text-sm font-semibold text-charcoal/70">
               {lodge.sessionLength}

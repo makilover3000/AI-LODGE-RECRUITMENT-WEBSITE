@@ -49,9 +49,26 @@ export default function LodgeOverview({ lodge }: { lodge: Lodge }) {
                 </li>
               ))}
             </ul>
-            <div className="mt-5 border-t border-pine-900/10 pt-4">
-              <p className="text-sm text-charcoal/70">Skill level</p>
-              <p className="font-display text-xl text-pine-900">{lodge.level}</p>
+            <div className="mt-5 grid gap-4 border-t border-pine-900/10 pt-4 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2">
+              <div>
+                {lodge.cohort === "past" ? (
+                  <>
+                    <p className="text-sm text-charcoal/80">Skill level</p>
+                    <p className="font-display text-xl text-pine-900">{lodge.level}</p>
+                  </>
+                ) : (
+                  <>
+                    <p className="text-sm text-charcoal/80">Who can join</p>
+                    <p className="font-display text-xl text-pine-900">Anyone</p>
+                  </>
+                )}
+              </div>
+              {lodge.schedule && (
+                <div className="lg:col-span-2">
+                  <p className="text-sm text-charcoal/80">When (tentative)</p>
+                  <p className="font-display text-lg leading-tight text-pine-900">{lodge.schedule}</p>
+                </div>
+              )}
             </div>
           </div>
         </ScrollReveal>

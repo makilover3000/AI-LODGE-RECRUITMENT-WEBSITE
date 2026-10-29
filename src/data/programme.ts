@@ -31,17 +31,17 @@ export const KEY_DATES: KeyDate[] = [
     note: "The form goes live — get your application in early.",
   },
   {
-    day: "26",
-    month: "Oct",
-    label: "Interviews begin",
-    note: "The first interviews start.",
-  },
-  {
-    day: "16",
+    day: "02",
     month: "Nov",
     label: "Applications close",
     note: "Last call — submit before the form closes.",
     deadline: true,
+  },
+  {
+    day: "09",
+    month: "Nov",
+    label: "Interviews begin",
+    note: "Interviews with your chosen lodges' captains start.",
   },
   {
     day: "24",
