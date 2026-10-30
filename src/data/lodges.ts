@@ -306,9 +306,9 @@ const CURRENT_LODGES: Lodge[] = [
     topics: PANDAI_TOPICS,
     cardTags: ["LLM Fundamentals", "RAG & Agents", "Vibe Coding"],
     captains: [
-      cap("Emily", "emily", "CIS / Year 1", "homesickpencil"),
+      cap("Xing You", "xing-you-2", "SCIS (IS) / Year 1", "xingthexing"),
       cap("Jun Han", "jun-han", "SCIS (IS) / Year 2", "junnhann"),
-      cap("Xing You", "xing-you", "SCIS (IS) / Year 1", "xingthexing"),
+      cap("Emily", "emily", "CIS / Year 1", "homesickpencil"),
     ],
     weeks: tentativeWeeks(PANDAI_TOPICS),
     trailTentative: true,
@@ -332,7 +332,7 @@ const CURRENT_LODGES: Lodge[] = [
     captains: [
       cap("Kaavya", "kaavya", "SCIS (IS) / Year 2", "kkaavya"),
       cap("Hari", "hari-2", "SCIS (IS) / Year 2", "harianagrandekutty"),
-      cap("Marilyn", "marilyn", "MIM", "llama_louie"),
+      cap("Marilyn", "marilyn", "MIM / Year 1", "llama_louie"),
     ],
     weeks: tentativeWeeks(HAWKINS_TOPICS),
     trailTentative: true,
@@ -357,7 +357,7 @@ const CURRENT_LODGES: Lodge[] = [
     captains: [
       cap("Yu Hui", "yu-hui-3", "SCIS (IS) / Year 1", "why_u_hui"),
       cap("Ryan", "ryan-3", "SCIS (IS) / Year 1", "rnonsense"),
-      { name: "Brod", detail: "SCIS (IS) / Year 2", telegram: "Adamsandler256", image: "/captains/brod-2.jpg" },
+      { name: "Brod", detail: "SCIS (IS) / Year 2", telegram: "Adamsandler256", image: "/captains/brod-3.jpg" },
     ],
     weeks: tentativeWeeks(BRYAN_TOPICS),
     trailTentative: true,
@@ -456,7 +456,7 @@ const CURRENT_LODGES: Lodge[] = [
     topics: BOLIAO_TOPICS,
     cardTags: ["AI Agents", "Multi-Agent Systems", "GraphRAG"],
     captains: [
-      cap("Yashwanth", "yashwanth", "SCIS (IS) / Year 2", "yaashyyyy"),
+      cap("Yashwanth", "yashwanth-2", "SCIS (IS) / Year 2", "yaashyyyy"),
       cap("Shaun", "shaun", "SCIS (IS) / Year 2", "shaunpan"),
       { name: "Sonya", detail: "SCIS (IS) / Year 2", telegram: "sooony_a", image: "/captains/sonya-2.jpg" },
     ],
@@ -481,10 +481,9 @@ const CURRENT_LODGES: Lodge[] = [
     topics: SPICE_TOPICS,
     cardTags: ["Multi-Agent AI", "A2A Systems", "AI for Decisions"],
     captains: [
-      // photo still to come for Felice — image "" shows the pine silhouette
-      { name: "Felice", telegram: "felicesuryanata", image: "" },
-      { name: "Tam", telegram: "Tam6701", image: "/captains/tam.jpg" },
-      { name: "Saelin", telegram: "s3_1in", image: "/captains/saelin.jpg" },
+      { name: "Felice", detail: "SCIS (CS) / Year 2", telegram: "felicesuryanata", image: "/captains/felice.jpg" },
+      { name: "Tam", detail: "MITB / Year 2", telegram: "Tam6701", image: "/captains/tam.jpg" },
+      { name: "Saelin", detail: "MITB / Year 2", telegram: "s3_1in", image: "/captains/saelin.jpg" },
       { name: "Gabriel", detail: "MITB / Year 2", telegram: "GMSidik", image: "/captains/gabriel-2.jpg" },
     ],
     weeks: tentativeWeeks(SPICE_TOPICS),
