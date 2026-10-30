@@ -5,6 +5,7 @@ import GuitarNeon from "@/components/lodge/GuitarNeon";
 import ShipNeon from "@/components/lodge/ShipNeon";
 import BatNeon from "@/components/lodge/BatNeon";
 import SkullNeon from "@/components/lodge/SkullNeon";
+import PapelPicadoBelt, { PAPEL_PER_HALF } from "@/components/lodge/PapelPicadoBelt";
 
 /**
  * A fast ribbon of the lodge's OWN logo, repeated tiny and streaming past — a
@@ -31,7 +32,9 @@ export default function LodgeTicker({ lodge }: { lodge: Lodge }) {
   const vars = {
     "--mk": `url(${logoSrc(lodge)})`,
     "--c": accent,
-    "--belt-dur": `${PER_HALF * (isNeon ? SECONDS_PER_TILE.neon : SECONDS_PER_TILE.flat)}s`,
+    "--belt-dur": isSkull
+      ? `${PAPEL_PER_HALF * 1.1}s` // papel picado string: unhurried, like bunting in a breeze
+      : `${PER_HALF * (isNeon ? SECONDS_PER_TILE.neon : SECONDS_PER_TILE.flat)}s`,
   } as CSSProperties;
 
   const half = (prefix: string) =>
@@ -83,14 +86,19 @@ export default function LodgeTicker({ lodge }: { lodge: Lodge }) {
   return (
     <div className="relative bg-pine-900">
       <div
-        className="ail-belt overflow-hidden py-4"
+        className={`ail-belt overflow-hidden ${isSkull ? "pb-3 pt-1" : "py-4"}`}
         style={vars}
         aria-hidden
       >
-        <div className="ail-ticker-track items-center">
-          {half("a")}
-          {half("b")}
-        </div>
+        {isSkull ? (
+          /* Despacito: a string of papel picado bunting instead of logo marks */
+          <PapelPicadoBelt />
+        ) : (
+          <div className="ail-ticker-track items-center">
+            {half("a")}
+            {half("b")}
+          </div>
+        )}
       </div>
 
       {/* edge fades so tiles enter/exit softly instead of hard-clipping */}

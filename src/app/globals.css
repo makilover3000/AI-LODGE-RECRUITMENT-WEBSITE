@@ -902,6 +902,48 @@ body {
   animation: ail-float 7s ease-in-out infinite;
   filter: drop-shadow(0 18px 26px rgba(0, 0, 0, 0.45));
 }
+/* ---- papel picado string (components/lodge/PapelPicadoBelt.tsx) ---- */
+.ail-papel-track {
+  align-items: flex-start;
+}
+.ail-papel-tile {
+  position: relative;
+  flex: none;
+  display: flex;
+  justify-content: center;
+  padding-top: 7px; /* banner tops sit on the cord's sag */
+}
+.ail-papel-cord {
+  position: absolute;
+  inset: 0 auto auto 0;
+  overflow: visible;
+}
+.ail-papel-cord path {
+  fill: none;
+  stroke: rgba(242, 240, 221, 0.75);
+  stroke-width: 1.4;
+  stroke-linecap: round;
+}
+/* each banner sways from its top edge — transform only, own layer, never repaints */
+.ail-papel-hang {
+  transform-origin: 50% 0;
+  will-change: transform;
+  /* no filter here on purpose: a filter on 76 swaying layers is the kind of per-frame
+     raster cost that made the old belts stutter */
+  animation: ail-papel-sway 3.6s ease-in-out infinite alternate;
+}
+.ail-papel-hang svg {
+  display: block;
+}
+@keyframes ail-papel-sway {
+  from {
+    transform: rotate(-4deg);
+  }
+  to {
+    transform: rotate(4deg);
+  }
+}
+
 /* ---- shared particles (components/lodge/showpiece/Particles.tsx) ---- */
 .ail-pt {
   position: absolute;
